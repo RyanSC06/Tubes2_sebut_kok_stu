@@ -128,7 +128,7 @@ public class Maze {
     public static void Main (string[] args) {
         Console.Write("Masukkan nama file: ");
         string fileName = Console.ReadLine();
-        textFile = @"test\" + fileName + ".txt";
+        textFile = @"..\test\" + fileName + ".txt";
 
         if (File.Exists(textFile)) {
             string[] map = File.ReadAllLines(textFile);
