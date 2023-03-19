@@ -125,28 +125,28 @@ public class Maze {
         
     }
 
-    public static void Main (string[] args) {
-        Console.Write("Masukkan nama file: ");
-        string fileName = Console.ReadLine();
-        textFile = @"..\test\" + fileName + ".txt";
+    // public static void Main (string[] args) {
+    //     Console.Write("Masukkan nama file: ");
+    //     string fileName = Console.ReadLine();
+    //     textFile = @"..\test\" + fileName + ".txt";
 
-        if (File.Exists(textFile)) {
-            string[] map = File.ReadAllLines(textFile);
-            if (isMapValid(map)) {
-                Console.WriteLine("\nPeta Anda:");
-                foreach (string line in map) {
-                    Console.WriteLine(line);
-                }
-            } else {
-                Console.WriteLine("Maaf, peta Anda tidak valid.");
-            }
+    //     if (File.Exists(textFile)) {
+    //         string[] map = File.ReadAllLines(textFile);
+    //         if (isMapValid(map)) {
+    //             Console.WriteLine("\nPeta Anda:");
+    //             foreach (string line in map) {
+    //                 Console.WriteLine(line);
+    //             }
+    //         } else {
+    //             Console.WriteLine("Maaf, peta Anda tidak valid.");
+    //         }
 
-        } else {
-            Console.WriteLine("Maaf, file tersebut tidak ada.");
-        }
+    //     } else {
+    //         Console.WriteLine("Maaf, file tersebut tidak ada.");
+    //     }
 
-        // Console.WriteLine("\nCOBA QUEUE");
-        // Queue<int> Antrian = new Queue<int>(10);
-        // Antrian.Enqueue(10);
-    }
+    //     // Console.WriteLine("\nCOBA QUEUE");
+    //     // Queue<int> Antrian = new Queue<int>(10);
+    //     // Antrian.Enqueue(10);
+    // }
 }
