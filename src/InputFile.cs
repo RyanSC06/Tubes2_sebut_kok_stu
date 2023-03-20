@@ -16,7 +16,7 @@ public class InputFile {
                         isKrustyThere = false;
                         Console.WriteLine("Map ERROR code: 1");
                         break;
-                    } else if (map[i][j] == 'T' && map[i][j] != 'R' && map[i][j] != 'X') {
+                    } else if (map[i][j] != 'T' && map[i][j] != 'R' && map[i][j] != 'X') {
                         trueChar = false;
                         Console.WriteLine("Map ERROR code: 2");
                     }
@@ -169,7 +169,7 @@ public class InputFile {
 
     public static int findNumberOfTreasure (Graph g) {
         int num_T = 0;
-        foreach (Point point in g.nodes) {
+        foreach (Point point in g.Nodes) {
             if (point.Type == TypeGrid.Treasure) {
                 num_T = num_T + 1;
             }
