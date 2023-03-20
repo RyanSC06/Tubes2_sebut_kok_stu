@@ -132,25 +132,25 @@ public class InputFile {
                     if (map[i][j] != ' ' && map[i][j] != 'X') {
                         if (isIdxValid (map, i, j+1)) {
                             if (isLocationReachable (map, i, j+1)) {
-                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j+1)]);
+                                G.addEdge(G.Nodes[k], G.Nodes[findNodeIdx(G.Nodes, i, j+1)]);
                             }
                         }
 
                         if (isIdxValid (map, i+1, j)) {
                             if (isLocationReachable (map, i+1, j)) {
-                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i+1, j)]);
+                                G.addEdge(G.Nodes[k], G.Nodes[findNodeIdx(G.Nodes, i+1, j)]);
                             }
                         }
 
                         if (isIdxValid (map, i, j-1)) {
                             if (isLocationReachable (map, i, j-1)) {
-                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j-1)]);
+                                G.addEdge(G.Nodes[k], G.Nodes[findNodeIdx(G.Nodes, i, j-1)]);
                             }
                         }
 
                         if (isIdxValid (map, i-1, j)) {
                             if (isLocationReachable (map, i-1, j)) {
-                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i-1, j)]);
+                                G.addEdge(G.Nodes[k], G.Nodes[findNodeIdx(G.Nodes, i-1, j)]);
                             }
                         }
                         
@@ -170,7 +170,7 @@ public class InputFile {
 
     public static void Main (string[] args) {
         Graph g = makeGraph();
-        foreach (var kvp in g.adjList) {
+        foreach (var kvp in g.AdjList) {
             Console.WriteLine("(" + kvp.Key.X + "," + kvp.Key.Y + ")");
             foreach (Point val in kvp.Value) {
                 Console.WriteLine("(" + val.X + "," + val.Y + ")");

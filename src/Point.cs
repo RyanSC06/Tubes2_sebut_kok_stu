@@ -6,13 +6,33 @@ public enum TypeGrid {
 }
 
 public class Point {
-    public int X { get; set; }
+    private int x;
 
-    public int Y { get; set; }
+    public int X {
+        get { return x; }
+        set { x = value; }
+    }
 
-    public TypeGrid Type { get; set; }
+    private int y;
 
-    public bool found { get; set; }
+    public int Y {
+        get { return y; }
+        set { y = value; }
+    }
+
+    private TypeGrid type;
+
+    public TypeGrid Type {
+        get { return type; }
+        set { type = value; }
+    }
+
+    private bool found;
+
+    public bool Found {
+        get { return found; }
+        set { found = value; }
+    }
 
     public Point(int x, int y, TypeGrid type) {
         X = x;
