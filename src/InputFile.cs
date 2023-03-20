@@ -177,6 +177,17 @@ public class InputFile {
         return (num_T);
     }
 
+    public static Point findStartingPoint (Graph g) {
+        Point starting = new Point(-1, -1, TypeGrid.X);
+        foreach (Point point in g.Nodes) {
+            if (point.Type == TypeGrid.KrustyKrab) {
+                starting = point;
+                break;
+            }
+        }
+        return (starting);
+    }
+    
     public static void Main (string[] args) {
         Graph g = makeGraph();
         foreach (var kvp in g.AdjList) {
