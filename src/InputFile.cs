@@ -49,7 +49,7 @@ public class InputFile {
     }
 
     public static bool isLocationReachable (string[] map, int idx_row, int idx_col) {
-        if ((map[idx_row][idx_col] != 'X') && (idx_col % 2 == 0)) {
+        if ((map[idx_row][idx_col] != 'X')) {
             return (true);
         } else {
             return (false);
@@ -97,7 +97,15 @@ public class InputFile {
     }
 
     public static Graph makeGraph() {
-        string[] map = input();
+        string[] actualMap = input();
+        string[] map = new string[actualMap.Length];
+        for (int r = 0; r < actualMap.Length; r++) {
+            for (int c = 0; c < actualMap[0].Length; c++) {
+                if (actualMap[r][c] != ' ') {
+                    map[r] = map[r] + actualMap[r][c];
+                }
+            }
+        }
         
         if (map[0] != "") {
             List<Point> nodes = new List<Point>();
@@ -122,9 +130,9 @@ public class InputFile {
             for (int i = 0; i < map.Length; i++) {
                 for (int j = 0; j < map[0].Length; j++) {
                     if (map[i][j] != ' ' && map[i][j] != 'X') {
-                        if (isIdxValid (map, i, j+2)) {
-                            if (isLocationReachable (map, i, j+2)) {
-                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j+2)]);
+                        if (isIdxValid (map, i, j+1)) {
+                            if (isLocationReachable (map, i, j+1)) {
+                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j+1)]);
                             }
                         }
 
@@ -134,9 +142,9 @@ public class InputFile {
                             }
                         }
 
-                        if (isIdxValid (map, i, j-2)) {
-                            if (isLocationReachable (map, i, j-2)) {
-                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j-2)]);
+                        if (isIdxValid (map, i, j-1)) {
+                            if (isLocationReachable (map, i, j-1)) {
+                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j-1)]);
                             }
                         }
 
