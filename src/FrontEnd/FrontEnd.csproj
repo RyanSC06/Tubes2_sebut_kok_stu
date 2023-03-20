@@ -8,12 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="background.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="asset\background.jpg" />
-    <Resource Include="background.jpg" />
   </ItemGroup>
 
 </Project>

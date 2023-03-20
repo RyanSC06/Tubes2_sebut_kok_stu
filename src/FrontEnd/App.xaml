@@ -4,6 +4,18 @@
              xmlns:local="clr-namespace:FrontEnd"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ControlTemplate x:Key="CustomRadioButtonTemplate" TargetType="{x:Type RadioButton}">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse x:Name="Bullet" Width="18" Height="18" Fill="WhiteSmoke" Stroke="Black" 
+                         StrokeThickness="0.5" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                <TextBlock x:Name="Text" Text="{TemplateBinding Content}" VerticalAlignment="Center" 
+                           Margin="3,0,0,0"/>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="Bullet" Property="Fill" Value="Black"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
     </Application.Resources>
 </Application>

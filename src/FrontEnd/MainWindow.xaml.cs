@@ -53,5 +53,10 @@ namespace FrontEnd
         {
 
         }
+
+        private void slDuration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
     }
 }
