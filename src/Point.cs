@@ -69,4 +69,8 @@ public class Point {
         return (isLeft(p) || isRight(p) || isUp(p) || isDown(p));
     }
 
+    public void print(){
+        Console.WriteLine("X: " + X + " Y: " + Y + " Type: " + Type + " Found: " + Found);
+    }
+
 }
