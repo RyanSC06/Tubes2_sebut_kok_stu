@@ -29,4 +29,24 @@ public class Point {
         found = false;
     }
 
+    public bool isLeft(Point p) {
+        return (X == p.X - 1 && Y == p.Y);
+    }
+
+    public bool isRight(Point p) {
+        return (X == p.X + 1 && Y == p.Y);
+    }
+
+    public bool isUp(Point p) {
+        return (X == p.X && Y == p.Y - 1);
+    }
+
+    public bool isDown(Point p) {
+        return (X == p.X && Y == p.Y + 1);
+    }
+
+    public bool isAdjacent(Point p) {
+        return (isLeft(p) || isRight(p) || isUp(p) || isDown(p));
+    }
+
 }
