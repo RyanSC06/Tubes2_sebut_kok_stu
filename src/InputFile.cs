@@ -41,7 +41,7 @@ public class InputFile {
 
 
     public static bool isIdxValid (string[] map, int idx_row, int idx_col) {
-        if ((idx_row < map.Length) && (idx_col < map[0].Length)) {
+        if ((idx_row < map.Length && idx_row >= 0) && (idx_col < map[0].Length && idx_col >= 0)) {
             return (true);
         } else {
             return (false);
@@ -49,7 +49,7 @@ public class InputFile {
     }
 
     public static bool isLocationReachable (string[] map, int idx_row, int idx_col) {
-        if ((map[idx_row][idx_col] != 'X') && (idx_row % 2 != 0)) {
+        if ((map[idx_row][idx_col] != 'X') && (idx_col % 2 == 0)) {
             return (true);
         } else {
             return (false);
@@ -58,7 +58,7 @@ public class InputFile {
 
     public static string[] input() {
         Console.Write("Masukkan nama file: ");
-        string filename = ("/test/" + Console.ReadLine() + ".txt");
+        string filename = ("\\test\\" + Console.ReadLine() + ".txt");
         string textFile =  (Directory.GetCurrentDirectory() + filename);
         Console.WriteLine(textFile);
 
@@ -122,20 +122,28 @@ public class InputFile {
             for (int i = 0; i < map.Length; i++) {
                 for (int j = 0; j < map[0].Length; j++) {
                     if (map[i][j] != ' ' && map[i][j] != 'X') {
-                        if (isIdxValid (map, i, j+2) && isLocationReachable (map, i, j+2)) {
-                            G.addEdge(G.nodes[k], G.nodes[findNodeIdx(nodes, i, j+2)]);
+                        if (isIdxValid (map, i, j+2)) {
+                            if (isLocationReachable (map, i, j+2)) {
+                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j+2)]);
+                            }
                         }
 
-                        if (isIdxValid (map, i+1, j) && isLocationReachable (map, i+1, j)) {
-                            G.addEdge(G.nodes[k], G.nodes[findNodeIdx(nodes, i+1, j)]);
+                        if (isIdxValid (map, i+1, j)) {
+                            if (isLocationReachable (map, i+1, j)) {
+                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i+1, j)]);
+                            }
                         }
 
-                        if (isIdxValid (map, i, j-2) && isLocationReachable (map, i, j-2)) {
-                            G.addEdge(G.nodes[k], G.nodes[findNodeIdx(nodes, i, j-2)]);
+                        if (isIdxValid (map, i, j-2)) {
+                            if (isLocationReachable (map, i, j-2)) {
+                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i, j-2)]);
+                            }
                         }
 
-                        if (isIdxValid (map, i-1, j) && isLocationReachable (map, i-1, j)) {
-                            G.addEdge(G.nodes[k], G.nodes[findNodeIdx(nodes, i-1, j)]);
+                        if (isIdxValid (map, i-1, j)) {
+                            if (isLocationReachable (map, i-1, j)) {
+                                G.addEdge(G.nodes[k], G.nodes[findNodeIdx(G.nodes, i-1, j)]);
+                            }
                         }
                         
                         k = k + 1;
@@ -154,6 +162,15 @@ public class InputFile {
 
     public static void Main (string[] args) {
         Graph g = makeGraph();
-    }
+        foreach (var kvp in g.adjList) {
+            Console.WriteLine("(" + kvp.Key.X + "," + kvp.Key.Y + ")");
+            foreach (Point val in kvp.Value) {
+                Console.WriteLine("(" + val.X + "," + val.Y + ")");
+            }
+            Console.WriteLine("");
+        }
 
+        // Point p = new Point(0,0,TypeGrid.KrustyKrab);
+        // Console.WriteLine(g.adjList[p]);
+    }
 }
