@@ -6,25 +6,10 @@
         xmlns:local="clr-namespace:FrontEnd"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
-    <Window.Resources>
-        <ControlTemplate x:Key="CustomRadioButtonTemplate" TargetType="{x:Type RadioButton}">
-            <StackPanel Orientation="Horizontal">
-                <Ellipse x:Name="Bullet" Width="18" Height="18" Fill="WhiteSmoke" Stroke="Black" 
-                         StrokeThickness="0.5" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                <TextBlock x:Name="Text" Text="{TemplateBinding Content}" VerticalAlignment="Center" 
-                           Margin="3,0,0,0"/>
-            </StackPanel>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter TargetName="Bullet" Property="Fill" Value="Black"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-    </Window.Resources>
     <StackPanel Orientation="Vertical" Margin="20">
         <Border Background="Black" CornerRadius="13,13,0,0" BorderBrush="White" 
-                BorderThickness="1,1,1,0">
-            <StackPanel Orientation="Vertical">
+                BorderThickness="1,1,1,0" >
+            <StackPanel Orientation="Vertical" >
                 <TextBlock Text="Treasure Hunt Solver" HorizontalAlignment="Center" FontSize="40" 
                            Foreground="White" FontWeight="DemiBold" Margin="7"/>
                 <Rectangle HorizontalAlignment="Stretch" Fill="White" Height="2.3" Margin="30,1,30,10"/>
@@ -32,8 +17,8 @@
         </Border>
         <Border Background="#FFF7EE" CornerRadius="0,0,13,13" BorderBrush="Black" 
                 BorderThickness="1,0,1,1" Padding="30,20,20,30">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" Width="270" >
+            <DockPanel >
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                     <TextBlock Text="Input" FontSize="30" FontWeight="Medium" Padding="2"/>
                     <Label Content="Filename" FontSize="20" Margin="0,20,0,0" Padding="2"/>
                     <Button x:Name="btnOpenFile" Click="btnOpenFile_Click" Width="164" Content="Open file"
@@ -44,18 +29,18 @@
                                  Template="{StaticResource CustomRadioButtonTemplate}" Checked="rbBfs_Checked"/>
                     <RadioButton Name="rbDfs" Margin="0,3,0,3" FontSize="17" Content="DFS"
                                  Template="{StaticResource CustomRadioButtonTemplate}"/>
-                    <Label Content="Duration of Each Step (in ms)" FontSize="20" Margin="0,20,0,0" Padding="2"/>
+                    <Label Content="Duration of Each Step &#xD;&#xA;(in ms)"  FontSize="20" Margin="0,20,0,0" Padding="2" />
                     <DockPanel VerticalAlignment="Center" Margin="4">
                         <Border CornerRadius="5" DockPanel.Dock="Right" BorderThickness="1.5" BorderBrush="Black" 
                                 Background="White" Margin="10,0,0,0">
-                            <TextBlock Text="{Binding ElementName=slDuration, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock x:Name="durationValue" Text="{Binding ElementName=slDuration, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
                                      TextAlignment="Right" DockPanel.Dock="Right" Margin="4,2,4,2" Width="27"/>
                         </Border>
                         <Slider Minimum="100" Maximum="3000" TickFrequency="100" IsSnapToTickEnabled="True" Name="slDuration" 
-                                Width="240" HorizontalAlignment="Left" Margin="0,0,5,0" />
+                                Width="170" HorizontalAlignment="Left" Margin="0,0,5,0" Padding="0,0,5,0" ValueChanged="slDuration_ValueChanged"/>
                     </DockPanel>
-                    <Button Margin="0,20,0,0" Content="Search!" Width="146" Height="32" Background="Black" Padding="0"
-                            Foreground="White" FontWeight="Medium" FontSize="19" VerticalContentAlignment="Center">
+                    <Button x:Name="btnSearch" Margin="0,20,0,0" Content="Search!" Width="146" Height="32" Background="Black" Padding="0"
+                            Foreground="White" FontSize="19" VerticalContentAlignment="Center">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="17"/>
@@ -64,7 +49,31 @@
                     </Button> 
                 </StackPanel>
                 <Rectangle HorizontalAlignment="Stretch" Fill="Black" Width="2.3" Margin="13,2,13,2"/>
-            </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0" DockPanel.Dock="Right">
+                    <TextBlock Text="Output" FontSize="30" FontWeight="Medium" Padding="2"/>
+                    <Border BorderBrush="Black" BorderThickness="2" Height="250" Width="250">
+                        <Grid x:Name = "map" Background = "White" >
+                        
+                        </Grid>
+                    </Border>
+                    <TextBlock x:Name="route" TextWrapping="Wrap" Text="Route: " FontSize="20" Margin="4"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width = "Auto" MinWidth="150" />
+                            <ColumnDefinition Width = "Auto" MinWidth="150"/>
+                            <ColumnDefinition Width = "Auto"/>                            
+                        </Grid.ColumnDefinitions>
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height = "*" />
+                        </Grid.RowDefinitions>
+                        
+                        <Label Grid.Row="0" Grid.Column="0" x:Name="step" Content="Steps: " FontSize="20"/>
+                        <Label Grid.Row="0" Grid.Column="1" x:Name="node" Content="Nodes: " FontSize="20"/>
+                        <Label Grid.Row="0" Grid.Column="2" x:Name="execTime" Content="Execution Time: " FontSize="20"/>
+                    </Grid>
+                </StackPanel>
+            </DockPanel>
         </Border>
     </StackPanel>
     <Window.Background>
