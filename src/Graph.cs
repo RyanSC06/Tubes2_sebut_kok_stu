@@ -1,39 +1,14 @@
 public class Graph{
 
-    private List<Point> nodes;
+    public List<Point> nodes {get; set;}
 
-    public List<Point> Nodes{
-        get { return nodes; }
-        set { nodes = value; }
-    }
+    public Dictionary<Point,List<Point>> adjList {get; set;}
 
-    private Dictionary<Point,List<Point>> adjList;
+    // public Dictionary<Point, Boolean> visited {get; set;}
 
-    public Dictionary<Point,List<Point>> AdjList{
-        get { return adjList; }
-        set { adjList = value; }
-    }
-
-    private Dictionary<Point, Boolean> visited {get; set;}
-
-    public Dictionary<Point, Boolean> Visited {
-        get { return visited; }
-        set { visited = value; }
-    }
-
-    private static int node_visited = 0;
-
-    public static int Node_visited {
-        get { return node_visited; }
-        set { node_visited = value; }
-    }
+    // public static int node_visited = 0;
 
     private List<Point> path = new List<Point>(); 
-
-    public List<Point> Path {
-        get { return path; }
-        set { path = value; }
-    }
 
     public Graph(List<Point> nodes){
         this.nodes = nodes;
@@ -59,21 +34,21 @@ public class Graph{
         return adjList[node];
     }
 
-    public void setVisited(Point node){
-        visited[node] = true;
-        node_visited++;
-    }
+    // public void setVisited(Point node){
+    //     visited[node] = true;
+    //     node_visited++;
+    // }
 
-    public bool isVisited(Point node){
-        return visited[node];
-    }
+    // public bool isVisited(Point node){
+    //     return visited[node];
+    // }
 
-    public void resetVisited(){
-        foreach (Point node in nodes){
-            visited[node] = false;
-        }
-        node_visited = 0;
-    }
+    // public void resetVisited(){
+    //     foreach (Point node in nodes){
+    //         visited[node] = false;
+    //     }
+    //     node_visited = 0;
+    // }
 
     public void addPath(Point node){
         path.Add(node);
@@ -101,7 +76,7 @@ public class Graph{
         Console.WriteLine(p.X);
         Console.WriteLine(p.Y);
         Console.WriteLine(p.Type);
-        Console.WriteLine(p.Found);
+        Console.WriteLine(p.found);
 
         // set 
         p.X = 3;
@@ -111,7 +86,7 @@ public class Graph{
         Console.WriteLine(p.X);
         Console.WriteLine(p.Y);
         Console.WriteLine(p.Type);
-        Console.WriteLine(p.Found);
+        Console.WriteLine(p.found);
 
         // enum test
         Console.WriteLine(TypeGrid.KrustyKrab);
