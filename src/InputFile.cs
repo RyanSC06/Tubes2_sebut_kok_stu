@@ -58,8 +58,8 @@ public class InputFile {
 
     public static string[] input() {
         Console.Write("Masukkan nama file: ");
-        string fileName = Console.ReadLine() + ".txt";
-        string textFile = @"..\test\" + fileName;
+        string filename = ("/test/" + Console.ReadLine() + ".txt");
+        string textFile =  (Directory.GetCurrentDirectory() + filename);
         Console.WriteLine(textFile);
 
         if (File.Exists(textFile)) {
@@ -80,11 +80,10 @@ public class InputFile {
         } else {
             string[] mapNotExist = new string[1];
             mapNotExist[0] = "";
-            Console.WriteLine("Maaf, file tersebut tidak ada.");
+            Console.WriteLine("Maaf, file tidak ditemukan.");
             return (mapNotExist);
         }
     }
-
 
     public static int findNodeIdx(List<Point> LP, int idx_row, int idx_col) {
         for (int i = 0; i < LP.Count(); i++) {
@@ -152,4 +151,9 @@ public class InputFile {
             return (G);
         }
     }
+
+    public static void Main (string[] args) {
+        Graph g = makeGraph();
+    }
+
 }
