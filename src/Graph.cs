@@ -1,14 +1,39 @@
 public class Graph{
 
-    public List<Point> nodes {get; set;}
+    private List<Point> nodes;
 
-    public Dictionary<Point,List<Point>> adjList {get; set;}
+    public List<Point> Nodes{
+        get { return nodes; }
+        set { nodes = value; }
+    }
 
-    public Dictionary<Point, Boolean> visited {get; set;}
+    private Dictionary<Point,List<Point>> adjList;
 
-    public static int node_visited = 0;
+    public Dictionary<Point,List<Point>> AdjList{
+        get { return adjList; }
+        set { adjList = value; }
+    }
+
+    private Dictionary<Point, Boolean> visited {get; set;}
+
+    public Dictionary<Point, Boolean> Visited {
+        get { return visited; }
+        set { visited = value; }
+    }
+
+    private static int node_visited = 0;
+
+    public static int Node_visited {
+        get { return node_visited; }
+        set { node_visited = value; }
+    }
 
     private List<Point> path = new List<Point>(); 
+
+    public List<Point> Path {
+        get { return path; }
+        set { path = value; }
+    }
 
     public Graph(List<Point> nodes){
         this.nodes = nodes;
@@ -76,7 +101,7 @@ public class Graph{
         Console.WriteLine(p.X);
         Console.WriteLine(p.Y);
         Console.WriteLine(p.Type);
-        Console.WriteLine(p.found);
+        Console.WriteLine(p.Found);
 
         // set 
         p.X = 3;
@@ -86,7 +111,7 @@ public class Graph{
         Console.WriteLine(p.X);
         Console.WriteLine(p.Y);
         Console.WriteLine(p.Type);
-        Console.WriteLine(p.found);
+        Console.WriteLine(p.Found);
 
         // enum test
         Console.WriteLine(TypeGrid.KrustyKrab);
