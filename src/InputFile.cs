@@ -2,11 +2,10 @@ using System;
 using System.IO;
 
 public class InputFile {
-    public static int isMapValid (string[] map) {
+    public static bool isMapValid (string[] map) {
     //Fungsi untuk memeriksa validitas peta dan mengembalikan jumlah 'T' yang ada
         bool trueChar = true;
         bool isKrustyThere = false;
-        int num_of_treasure = 0;
 
         for (int i = 0; i < map.Length; i++) {
             for (int j = 0; j < map[0].Length; j++) {
@@ -17,9 +16,7 @@ public class InputFile {
                         isKrustyThere = false;
                         Console.WriteLine("Map ERROR code: 1");
                         break;
-                    } else if (map[i][j] == 'T') {
-                        num_of_treasure = num_of_treasure + 1;
-                    } else if (map[i][j] != 'R' && map[i][j] != 'X') {
+                    } else if (map[i][j] == 'T' && map[i][j] != 'R' && map[i][j] != 'X') {
                         trueChar = false;
                         Console.WriteLine("Map ERROR code: 2");
                     }
@@ -33,14 +30,15 @@ public class InputFile {
         }
 
         if (trueChar && isKrustyThere) {
-            return (num_of_treasure);
+            return (true);
         } else {
-            return (-1);
+            return (false);
         }
     }
 
 
     public static bool isIdxValid (string[] map, int idx_row, int idx_col) {
+    //Masukan "map" berupa peta masukan yang sudah dirapikan (tanpa spasi)
         if ((idx_row < map.Length && idx_row >= 0) && (idx_col < map[0].Length && idx_col >= 0)) {
             return (true);
         } else {
@@ -49,6 +47,7 @@ public class InputFile {
     }
 
     public static bool isLocationReachable (string[] map, int idx_row, int idx_col) {
+    //Masukan "map" berupa peta masukan yang sudah dirapikan (tanpa spasi)
         if ((map[idx_row][idx_col] != 'X')) {
             return (true);
         } else {
@@ -64,7 +63,7 @@ public class InputFile {
 
         if (File.Exists(textFile)) {
             string[] map = File.ReadAllLines(textFile);
-            if (isMapValid(map) != -1) {
+            if (isMapValid(map)) {
                 Console.WriteLine("\nPeta Anda:");
                 foreach (string line in map) {
                     Console.WriteLine(line);
@@ -168,6 +167,16 @@ public class InputFile {
         }
     }
 
+    public static int findNumberOfTreasure (Graph g) {
+        int num_T = 0;
+        foreach (Point point in g.nodes) {
+            if (point.Type == TypeGrid.Treasure) {
+                num_T = num_T + 1;
+            }
+        }
+        return (num_T);
+    }
+
     public static void Main (string[] args) {
         Graph g = makeGraph();
         foreach (var kvp in g.adjList) {
@@ -177,8 +186,5 @@ public class InputFile {
             }
             Console.WriteLine("");
         }
-
-        // Point p = new Point(0,0,TypeGrid.KrustyKrab);
-        // Console.WriteLine(g.adjList[p]);
     }
 }
