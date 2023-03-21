@@ -76,12 +76,12 @@ public class DFS{
     }
 
     private void addBacktrackPath(Point source){
-            var back = pathVisited[pathVisited.IndexOf(source)-1];
+            var back = path[path.IndexOf(source)-1];
             backtrackPath.Add(back);
             if (backtrackStop(back)){
                 return;
             }
-            var next = pathVisited[pathVisited.IndexOf(back)-1];
+            var next = path[path.IndexOf(back)-1];
             addBacktrackPathUtil(next);
     }
 
@@ -90,7 +90,7 @@ public class DFS{
         if (backtrackStop(back)){
             return;
         }       
-        var next = pathVisited[pathVisited.IndexOf(back)-1];
+        var next = path[path.IndexOf(back)-1];
         addBacktrackPathUtil(next);
     }
 
