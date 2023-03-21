@@ -14,6 +14,8 @@ public class DFS{
 
     private int treasureCount = 0;
 
+    private int step = 0;
+
     public DFS(Graph g, Point source, int numOfTreasure){
             this.g = g;
             dfs(source, numOfTreasure);
@@ -21,6 +23,7 @@ public class DFS{
     }
 
     private void dfs(Point source, int numOfTreasure){
+        step++;
         source.pointFound();
         pathVisited.Add(source);
         path.Add(source);
@@ -30,25 +33,23 @@ public class DFS{
         if (treasureCount == numOfTreasure){
             return;
         }
-        // if (g.getNeighbours(source).Count == 0){
-        //     addBacktrackPath(source);
-        //     source.print();
-        //     printListPath(backtrackPath);
-        //     foreach (Point node in backtrackPath){
-        //         path.Add(node);
-        //     }
-        //     backtrackPath.Clear();
-        // } else {
-        //     foreach (Point node in g.getNeighbours(source)){
-        //         if (!node.Found){
-        //             pathStack.Push(node);
-        //         }
-        //     }
-        // }
-        foreach (Point node in g.getNeighbours(source)){
-            if (!node.Found){
-                pathStack.Push(node);
+        if (g.getNeighboursNotVisited(source) == 0){
+            addBacktrackPath(source);
+            printListPath(backtrackPath);
+            foreach (Point node in backtrackPath){
+                path.Add(node);
+                step++;
             }
+            backtrackPath.Clear();
+        } else {
+            var neighbours = g.getNeighbours(source);
+            // printListPath(neighbours);
+            for (int i = neighbours.Count-1; i >= 0; i--){
+                if (!neighbours[i].Found){
+                    pathStack.Push(neighbours[i]);
+                }
+            }
+            // printListPath(pathStack.ToList());
         }
         Point next = pathStack.Pop();
         dfs(next, numOfTreasure);
@@ -64,18 +65,32 @@ public class DFS{
         }
     }
 
-    private void addBacktrackPath(Point source){
-            addBacktrackPathUtil(source);
+    private bool backtrackStop(Point source){
+        if (pathVisited.IndexOf(source) == 0){
+            return true;
+        }
+        if (g.getNeighboursNotVisited(source) > 0){
+            return true;
+        }
+        return false;
     }
 
-    private void addBacktrackPathUtil(Point source){
-        Point next = pathVisited[pathVisited.IndexOf(source)-1];
-        backtrackPath.Add(next);
-        source.pointFound();
-        if (g.getNeighbours(next).Count > 1 && !next.Found){
-            next.pointFound();
+    private void addBacktrackPath(Point source){
+            var back = pathVisited[pathVisited.IndexOf(source)-1];
+            backtrackPath.Add(back);
+            if (backtrackStop(back)){
+                return;
+            }
+            var next = pathVisited[pathVisited.IndexOf(back)-1];
+            addBacktrackPathUtil(next);
+    }
+
+    private void addBacktrackPathUtil(Point back){
+        backtrackPath.Add(back);
+        if (backtrackStop(back)){
             return;
-        }
+        }       
+        var next = pathVisited[pathVisited.IndexOf(back)-1];
         addBacktrackPathUtil(next);
     }
 
@@ -144,7 +159,7 @@ public class DFS{
         int treasure = InputFile.findNumberOfTreasure(input);
         Console.WriteLine(treasure);
         DFS dfs2 = new DFS(input, starting, treasure);
-        // printListPath(dfs2.path);
+        printListPath(dfs2.path);
         printListPath(dfs2.pathVisited);
 
         // List<Point> bfs = MazeBFS.findTreasureBFS(input);

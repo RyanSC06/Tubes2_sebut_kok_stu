@@ -34,6 +34,16 @@ public class Graph{
         return adjList[node];
     }
 
+    public int getNeighboursNotVisited(Point node){
+        int n = 0;
+        foreach (Point p in adjList[node]){
+            if (!p.Found){
+                n++;
+            }
+        }
+        return n;
+    }
+
     public void printNodes(){
         foreach (Point node in nodes){
             node.print();
