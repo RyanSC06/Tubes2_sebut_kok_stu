@@ -94,6 +94,19 @@ public class InputFile {
         return (-1);
     }
 
+    public static string[] makeMap() {
+        string[] actualMap = input();        
+        string[] map = new string[actualMap.Length];
+        for (int r = 0; r < actualMap.Length; r++) {
+            for (int c = 0; c < actualMap[0].Length; c++) {
+                if (actualMap[r][c] != ' ') {
+                    map[r] = map[r] + actualMap[r][c];
+                }
+            }
+        }
+        return map;        
+    }
+
     public static Graph makeGraph() {
         string[] actualMap = input();
         string[] map = new string[actualMap.Length];
