@@ -17,10 +17,11 @@ public class DFS{
     public DFS(Graph g, Point source, int numOfTreasure){
             this.g = g;
             dfs(source, numOfTreasure);
+            g.resetGraph();
     }
 
     private void dfs(Point source, int numOfTreasure){
-        // source.pointFound();
+        source.pointFound();
         pathVisited.Add(source);
         path.Add(source);
         if (source.Type == TypeGrid.Treasure){
@@ -29,19 +30,24 @@ public class DFS{
         if (treasureCount == numOfTreasure){
             return;
         }
-        if (g.getNeighbours(source).Count == 0){
-            addBacktrackPath(source);
-            source.print();
-            printListPath(backtrackPath);
-            foreach (Point node in backtrackPath){
-                path.Add(node);
-            }
-            backtrackPath.Clear();
-        } else {
-            foreach (Point node in g.getNeighbours(source)){
-                if (!node.Found){
-                    pathStack.Push(node);
-                }
+        // if (g.getNeighbours(source).Count == 0){
+        //     addBacktrackPath(source);
+        //     source.print();
+        //     printListPath(backtrackPath);
+        //     foreach (Point node in backtrackPath){
+        //         path.Add(node);
+        //     }
+        //     backtrackPath.Clear();
+        // } else {
+        //     foreach (Point node in g.getNeighbours(source)){
+        //         if (!node.Found){
+        //             pathStack.Push(node);
+        //         }
+        //     }
+        // }
+        foreach (Point node in g.getNeighbours(source)){
+            if (!node.Found){
+                pathStack.Push(node);
             }
         }
         Point next = pathStack.Pop();
@@ -65,7 +71,9 @@ public class DFS{
     private void addBacktrackPathUtil(Point source){
         Point next = pathVisited[pathVisited.IndexOf(source)-1];
         backtrackPath.Add(next);
-        if (g.getNeighbours(next).Count > 1){
+        source.pointFound();
+        if (g.getNeighbours(next).Count > 1 && !next.Found){
+            next.pointFound();
             return;
         }
         addBacktrackPathUtil(next);
@@ -84,7 +92,7 @@ public class DFS{
     public static void Main(string[] args){
         /*
         K R R 
-        T X X
+        T R X
         R R T
         */
         Point p1 = new Point(0, 0, TypeGrid.KrustyKrab);
@@ -92,7 +100,7 @@ public class DFS{
         Point p3 = new Point(2, 0, TypeGrid.Lintasan);
 
         Point p4 = new Point(0, 1, TypeGrid.Lintasan);
-        // Point p5 = new Point(1, 1, TypeGrid.Lintasan);
+        Point p5 = new Point(1, 1, TypeGrid.Lintasan);
         Point p6 = new Point(2, 1, TypeGrid.Lintasan);
 
         Point p7 = new Point(0, 2, TypeGrid.Lintasan);
@@ -103,7 +111,7 @@ public class DFS{
         ps.Add(p2);
         ps.Add(p3);
         ps.Add(p4);
-        // ps.Add(p5);
+        ps.Add(p5);
         ps.Add(p6);
         ps.Add(p7);
         ps.Add(p9);
@@ -113,16 +121,34 @@ public class DFS{
         g.addEdge(p1, p2);
         g.addEdge(p1, p4);
         g.addEdge(p2, p3);
-        // g.addEdge(p2, p5);
+        g.addEdge(p2, p5);
         g.addEdge(p3, p6);
-        // g.addEdge(p4, p5);
+        g.addEdge(p4, p5);
         g.addEdge(p4, p7);
-        // g.addEdge(p5, p6);
+        g.addEdge(p5, p6);
+        g.addEdge(p6, p3);
         g.addEdge(p6, p9);
 
-        DFS dfs = new DFS(g, p1, 2);
-        printListPath(dfs.path);
-        printListPath(dfs.pathVisited);
+
+        // DFS dfs = new DFS(g, p1, 2);
+        // printListPath(dfs.path);
+        // printListPath(dfs.pathVisited);
+
+        Graph input = InputFile.makeGraph();
+
+        input.printNodes();
+        input.printAdj();
+
+        Point starting = InputFile.findStartingPoint(input);
+        starting.print();
+        int treasure = InputFile.findNumberOfTreasure(input);
+        Console.WriteLine(treasure);
+        DFS dfs2 = new DFS(input, starting, treasure);
+        // printListPath(dfs2.path);
+        printListPath(dfs2.pathVisited);
+
+        // List<Point> bfs = MazeBFS.findTreasureBFS(input);
+        // printListPath(bfs);
     }
 
 }

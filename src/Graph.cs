@@ -34,6 +34,29 @@ public class Graph{
         return adjList[node];
     }
 
+    public void printNodes(){
+        foreach (Point node in nodes){
+            node.print();
+        }
+    }
+
+    public void resetGraph(){
+        foreach (Point node in nodes){
+            node.resetPoint();
+        }
+    }
+
+    public void printAdj(){
+        foreach (Point key in nodes){
+            Console.WriteLine("Adjacency List of ");
+            key.print();
+            Console.WriteLine(" -> ");
+            foreach (Point p in adjList[key]){
+                p.print();
+            }
+        }
+    }
+
     public static void Main (string[] args){
         // point test
         Point p = new Point(1, 2, TypeGrid.KrustyKrab);
