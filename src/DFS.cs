@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class DFS{
 
@@ -14,13 +15,27 @@ public class DFS{
 
     private int treasureCount = 0;
 
+    private int step = -1;
+
+    private TimeSpan time = new TimeSpan();
+
     public DFS(Graph g, Point source, int numOfTreasure){
             this.g = g;
+            var watch = new Stopwatch();
+            watch.Start();
             dfs(source, numOfTreasure);
+            watch.Stop();
+            time = watch.Elapsed;
+            Console.WriteLine("Exec time: " + time.TotalMilliseconds + " ms");
+            Console.WriteLine("Step: " + (path.Count - 1));
+            Console.WriteLine("Step: " + step);
+            Console.WriteLine("Node: " + pathVisited.Count);
+            g.resetGraph();
     }
 
     private void dfs(Point source, int numOfTreasure){
-        // source.pointFound();
+        step++;
+        source.pointFound();
         pathVisited.Add(source);
         path.Add(source);
         if (source.Type == TypeGrid.Treasure){
@@ -29,22 +44,32 @@ public class DFS{
         if (treasureCount == numOfTreasure){
             return;
         }
-        if (g.getNeighbours(source).Count == 0){
+        if (g.getNeighboursNotVisited(source) == 0){
             addBacktrackPath(source);
-            source.print();
             printListPath(backtrackPath);
             foreach (Point node in backtrackPath){
                 path.Add(node);
+                step++;
             }
             backtrackPath.Clear();
         } else {
-            foreach (Point node in g.getNeighbours(source)){
-                if (!node.Found){
-                    pathStack.Push(node);
+            var neighbours = g.getNeighbours(source);
+            // printListPath(neighbours);
+            for (int i = neighbours.Count-1; i >= 0; i--){
+                if (!neighbours[i].Found){
+                    pathStack.Push(neighbours[i]);
                 }
             }
+            // printListPath(pathStack.ToList());
+        }
+        if (pathStack.Count == 0){
+            System.Console.WriteLine("No path found");
+            return;
         }
         Point next = pathStack.Pop();
+        while (next.Found){
+            next = pathStack.Pop();
+        }
         dfs(next, numOfTreasure);
     }
 
@@ -58,16 +83,34 @@ public class DFS{
         }
     }
 
-    private void addBacktrackPath(Point source){
-            addBacktrackPathUtil(source);
+    private bool backtrackStop(Point source){
+        if (pathVisited.IndexOf(source) == 0){
+            return true;
+        }
+        if (g.getNeighboursNotVisited(source) > 0){
+            return true;
+        }
+        return false;
     }
 
-    private void addBacktrackPathUtil(Point source){
-        Point next = pathVisited[pathVisited.IndexOf(source)-1];
-        backtrackPath.Add(next);
-        if (g.getNeighbours(next).Count > 1){
+    private void addBacktrackPath(Point source){
+            var back = path[path.IndexOf(source)-1];
+            backtrackPath.Add(back);
+            back.pointFound();
+            if (backtrackStop(back)){
+                return;
+            }
+            var next = path[path.IndexOf(back)-1];
+            addBacktrackPathUtil(next);
+    }
+
+    private void addBacktrackPathUtil(Point back){
+        backtrackPath.Add(back);
+        back.pointFound();
+        if (backtrackStop(back)){
             return;
-        }
+        }       
+        var next = path[path.IndexOf(back)-1];
         addBacktrackPathUtil(next);
     }
 
@@ -82,47 +125,21 @@ public class DFS{
 
 
     public static void Main(string[] args){
-        /*
-        K R R 
-        T X X
-        R R T
-        */
-        Point p1 = new Point(0, 0, TypeGrid.KrustyKrab);
-        Point p2 = new Point(1, 0, TypeGrid.Treasure);
-        Point p3 = new Point(2, 0, TypeGrid.Lintasan);
+        Graph input = InputFile.makeGraph();
 
-        Point p4 = new Point(0, 1, TypeGrid.Lintasan);
-        // Point p5 = new Point(1, 1, TypeGrid.Lintasan);
-        Point p6 = new Point(2, 1, TypeGrid.Lintasan);
+        input.printNodes();
+        input.printAdj();
 
-        Point p7 = new Point(0, 2, TypeGrid.Lintasan);
-        Point p9 = new Point(2, 2, TypeGrid.Treasure);
+        Point starting = InputFile.findStartingPoint(input);
+        starting.print();
+        int treasure = InputFile.findNumberOfTreasure(input);
+        Console.WriteLine(treasure);
+        DFS dfs2 = new DFS(input, starting, treasure);
+        printListPath(dfs2.path);
+        printListPath(dfs2.pathVisited);
 
-        List<Point> ps = new List<Point>();
-        ps.Add(p1);
-        ps.Add(p2);
-        ps.Add(p3);
-        ps.Add(p4);
-        // ps.Add(p5);
-        ps.Add(p6);
-        ps.Add(p7);
-        ps.Add(p9);
-
-        Graph g = new Graph(ps);
-
-        g.addEdge(p1, p2);
-        g.addEdge(p1, p4);
-        g.addEdge(p2, p3);
-        // g.addEdge(p2, p5);
-        g.addEdge(p3, p6);
-        // g.addEdge(p4, p5);
-        g.addEdge(p4, p7);
-        // g.addEdge(p5, p6);
-        g.addEdge(p6, p9);
-
-        DFS dfs = new DFS(g, p1, 2);
-        printListPath(dfs.path);
-        printListPath(dfs.pathVisited);
+        // List<Point> bfs = MazeBFS.findTreasureBFS(input);
+        // printListPath(bfs);
     }
 
 }

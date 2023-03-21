@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Windows.Shapes;
 
 public class InputFile {
     public static bool isMapValid (string[] map) {
@@ -54,14 +56,10 @@ public class InputFile {
         }
     }
 
-    public static string[] input() {
-        Console.Write("Masukkan nama file: ");
-        string filename = ("\\test\\" + Console.ReadLine() + ".txt");
-        string textFile =  (Directory.GetCurrentDirectory() + filename);
-        Console.WriteLine(textFile);
+    public static string[] input(string path) {
 
-        if (File.Exists(textFile)) {
-            string[] map = File.ReadAllLines(textFile);
+        if (File.Exists(path)) {
+            string[] map = File.ReadAllLines(path);
             if (isMapValid(map)) {
                 Console.WriteLine("\nPeta Anda:");
                 foreach (string line in map) {
@@ -70,14 +68,14 @@ public class InputFile {
                 return (map);
             } else {
                 string[] mapNotValid = new string[1];
-                mapNotValid[0] = "-1";
+                mapNotValid[0] = "";
                 Console.WriteLine("Maaf, peta Anda tidak valid.");
                 return (mapNotValid);
             }
 
         } else {
             string[] mapNotExist = new string[1];
-            mapNotExist[0] = "-1";
+            mapNotExist[0] = "";
             Console.WriteLine("Maaf, file tidak ditemukan.");
             return (mapNotExist);
         }
@@ -94,8 +92,8 @@ public class InputFile {
         return (-1);
     }
 
-    public static string[] makeMap() {
-        string[] actualMap = input();        
+    public static string[] makeMap(string path) {
+        string[] actualMap = input(path);        
         string[] map = new string[actualMap.Length];
         for (int r = 0; r < actualMap.Length; r++) {
             for (int c = 0; c < actualMap[0].Length; c++) {
@@ -107,8 +105,8 @@ public class InputFile {
         return map;        
     }
 
-    public static Graph makeGraph() {
-        string[] actualMap = input();
+    public static Graph makeGraph(string path) {
+        string[] actualMap = input(path);
         string[] map = new string[actualMap.Length];
         for (int r = 0; r < actualMap.Length; r++) {
             for (int c = 0; c < actualMap[0].Length; c++) {
@@ -117,7 +115,7 @@ public class InputFile {
                 }
             }
         }
-        if (map[0] != "-1") {
+        if (map.Length != 1) {
             List<Point> nodes = new List<Point>();
             for (int i = 0; i < map.Length; i++) {
                 for (int j = 0; j < map[0].Length; j++) {
@@ -199,13 +197,14 @@ public class InputFile {
         return (starting);
     }
     
-    public static void Main (string[] args) {
-        string[] map = makeMap();
-        for (int i = 0; i < map.Length; i++) {
-            for (int j = 0; j < map.Length[0]; j++)
-            {
-                Console.WriteLine(map[i][j]);;
-            }
-        }
-    }
+    // public static void Main (string[] args) {
+    //     Graph g = makeGraph(path);
+    //     foreach (var kvp in g.AdjList) {
+    //         Console.WriteLine("(" + kvp.Key.X + "," + kvp.Key.Y + ")");
+    //         foreach (Point val in kvp.Value) {
+    //             Console.WriteLine("(" + val.X + "," + val.Y + ")");
+    //         }
+    //         Console.WriteLine("");
+    //     }
+    // }
 }

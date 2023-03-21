@@ -1,3 +1,5 @@
+using System;
+
 public enum TypeGrid {
     KrustyKrab,         // KrustyKrab (Start point)
     Lintasan,           // Lintasan

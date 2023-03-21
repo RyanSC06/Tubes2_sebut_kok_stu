@@ -18,16 +18,16 @@
         <Border Background="#FFF7EE" CornerRadius="0,0,13,13" BorderBrush="Black" 
                 BorderThickness="1,0,1,1" Padding="30,20,20,30">
             <DockPanel >
-                <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                    <TextBlock Text="Input" FontSize="30" FontWeight="Medium" Padding="2"/>
-                    <Label Content="Filename" FontSize="20" Margin="0,20,0,0" Padding="2"/>
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Left" >
+                    <TextBlock Text="Input" FontSize="30" FontWeight="Medium" Padding="2" x:Name="input"/>
+                    <Label Content="Filename" FontSize="20" Margin="0,20,0,0" Padding="2" />
                     <Button x:Name="btnOpenFile" Click="btnOpenFile_Click" Width="164" Content="Open file"
                             HorizontalAlignment="Left" HorizontalContentAlignment="Left" Padding="6,4,0,5"
                             Background="White"/>
                     <Label Content="Algorithm" FontSize="20" Margin="0,20,0,0" Padding="2"/>
                     <RadioButton Name="rbBfs" Margin="0,3,0,3" FontSize="17" Content="BFS"
                                  Template="{StaticResource CustomRadioButtonTemplate}" Checked="rbBfs_Checked"/>
-                    <RadioButton Name="rbDfs" Margin="0,3,0,3" FontSize="17" Content="DFS"
+                    <RadioButton Name="rbDfs" Margin="0,3,0,3" FontSize="17" Content="DFS" Checked="rbDfs_Checked"
                                  Template="{StaticResource CustomRadioButtonTemplate}"/>
                     <Label Content="Duration of Each Step &#xD;&#xA;(in ms)"  FontSize="20" Margin="0,20,0,0" Padding="2" />
                     <DockPanel VerticalAlignment="Center" Margin="4">
@@ -37,10 +37,10 @@
                                      TextAlignment="Right" DockPanel.Dock="Right" Margin="4,2,4,2" Width="27"/>
                         </Border>
                         <Slider Minimum="100" Maximum="3000" TickFrequency="100" IsSnapToTickEnabled="True" Name="slDuration" 
-                                Width="170" HorizontalAlignment="Left" Margin="0,0,5,0" Padding="0,0,5,0" ValueChanged="slDuration_ValueChanged"/>
+                                Width="170" HorizontalAlignment="Left" Margin="0,0,5,0" Padding="0,0,5,0" ValueChanged="slDuration_ValueChanged" />
                     </DockPanel>
                     <Button x:Name="btnSearch" Margin="0,20,0,0" Content="Search!" Width="146" Height="32" Background="Black" Padding="0"
-                            Foreground="White" FontSize="19" VerticalContentAlignment="Center">
+                            Foreground="White" FontSize="19" VerticalContentAlignment="Center" Click="btnSearch_Click">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="17"/>
@@ -53,7 +53,8 @@
                     <TextBlock Text="Output" FontSize="30" FontWeight="Medium" Padding="2"/>
                     <Border BorderBrush="Black" BorderThickness="2" Height="250" Width="250">
                         <Grid x:Name = "map" Background = "White" >
-                        
+                            <Grid.ColumnDefinitions />
+                            <Grid.RowDefinitions />
                         </Grid>
                     </Border>
                     <TextBlock x:Name="route" TextWrapping="Wrap" Text="Route: " FontSize="20" Margin="4"/>
@@ -67,10 +68,10 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height = "*" />
                         </Grid.RowDefinitions>
-                        
-                        <Label Grid.Row="0" Grid.Column="0" x:Name="step" Content="Steps: " FontSize="20"/>
-                        <Label Grid.Row="0" Grid.Column="1" x:Name="node" Content="Nodes: " FontSize="20"/>
-                        <Label Grid.Row="0" Grid.Column="2" x:Name="execTime" Content="Execution Time: " FontSize="20"/>
+
+                        <Label Grid.Row="0" Grid.Column="0" x:Name="stepLabel" Content="Steps: " FontSize="20"/>
+                        <Label Grid.Row="0" Grid.Column="1" x:Name="nodeLabel" Content="Nodes: " FontSize="20"/>
+                        <Label Grid.Row="0" Grid.Column="2" x:Name="execTimeLabel" Content="Execution Time: " FontSize="20"/>
                     </Grid>
                 </StackPanel>
             </DockPanel>
