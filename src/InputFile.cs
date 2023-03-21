@@ -13,17 +13,16 @@ public class InputFile {
                     if (map[i][j] == 'K' && isKrustyThere == false) {
                         isKrustyThere = true;
                     } else if (map[i][j] == 'K' && isKrustyThere == true) {
-                        isKrustyThere = false;
                         Console.WriteLine("Map ERROR code: 1");
-                        break;
+                        return false;
                     } else if (map[i][j] != 'T' && map[i][j] != 'R' && map[i][j] != 'X') {
-                        trueChar = false;
                         Console.WriteLine("Map ERROR code: 2");
+                        return false;
                     }
                 } else {
                     if (map[i][j] != ' ') {
-                        trueChar = false;
                         Console.WriteLine("Map ERROR code: 3");
+                        return false;
                     }
                 }
             }
@@ -105,8 +104,7 @@ public class InputFile {
                 }
             }
         }
-        
-        if (map[0] != "") {
+        if (map.Length != 1) {
             List<Point> nodes = new List<Point>();
             for (int i = 0; i < map.Length; i++) {
                 for (int j = 0; j < map[0].Length; j++) {
