@@ -52,6 +52,9 @@ public class DFS{
             // printListPath(pathStack.ToList());
         }
         Point next = pathStack.Pop();
+        while (next.Found){
+            next = pathStack.Pop();
+        }
         dfs(next, numOfTreasure);
     }
 
@@ -78,6 +81,7 @@ public class DFS{
     private void addBacktrackPath(Point source){
             var back = path[path.IndexOf(source)-1];
             backtrackPath.Add(back);
+            back.pointFound();
             if (backtrackStop(back)){
                 return;
             }
@@ -87,6 +91,7 @@ public class DFS{
 
     private void addBacktrackPathUtil(Point back){
         backtrackPath.Add(back);
+        back.pointFound();
         if (backtrackStop(back)){
             return;
         }       
@@ -105,50 +110,6 @@ public class DFS{
 
 
     public static void Main(string[] args){
-        /*
-        K R R 
-        T R X
-        R R T
-        */
-        Point p1 = new Point(0, 0, TypeGrid.KrustyKrab);
-        Point p2 = new Point(1, 0, TypeGrid.Treasure);
-        Point p3 = new Point(2, 0, TypeGrid.Lintasan);
-
-        Point p4 = new Point(0, 1, TypeGrid.Lintasan);
-        Point p5 = new Point(1, 1, TypeGrid.Lintasan);
-        Point p6 = new Point(2, 1, TypeGrid.Lintasan);
-
-        Point p7 = new Point(0, 2, TypeGrid.Lintasan);
-        Point p9 = new Point(2, 2, TypeGrid.Treasure);
-
-        List<Point> ps = new List<Point>();
-        ps.Add(p1);
-        ps.Add(p2);
-        ps.Add(p3);
-        ps.Add(p4);
-        ps.Add(p5);
-        ps.Add(p6);
-        ps.Add(p7);
-        ps.Add(p9);
-
-        Graph g = new Graph(ps);
-
-        g.addEdge(p1, p2);
-        g.addEdge(p1, p4);
-        g.addEdge(p2, p3);
-        g.addEdge(p2, p5);
-        g.addEdge(p3, p6);
-        g.addEdge(p4, p5);
-        g.addEdge(p4, p7);
-        g.addEdge(p5, p6);
-        g.addEdge(p6, p3);
-        g.addEdge(p6, p9);
-
-
-        // DFS dfs = new DFS(g, p1, 2);
-        // printListPath(dfs.path);
-        // printListPath(dfs.pathVisited);
-
         Graph input = InputFile.makeGraph();
 
         input.printNodes();
