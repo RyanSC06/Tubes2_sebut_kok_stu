@@ -70,14 +70,14 @@ public class InputFile {
                 return (map);
             } else {
                 string[] mapNotValid = new string[1];
-                mapNotValid[0] = "";
+                mapNotValid[0] = "-1";
                 Console.WriteLine("Maaf, peta Anda tidak valid.");
                 return (mapNotValid);
             }
 
         } else {
             string[] mapNotExist = new string[1];
-            mapNotExist[0] = "";
+            mapNotExist[0] = "-1";
             Console.WriteLine("Maaf, file tidak ditemukan.");
             return (mapNotExist);
         }
@@ -117,7 +117,7 @@ public class InputFile {
                 }
             }
         }
-        if (map.Length != 1) {
+        if (map[0] != "-1") {
             List<Point> nodes = new List<Point>();
             for (int i = 0; i < map.Length; i++) {
                 for (int j = 0; j < map[0].Length; j++) {
