@@ -1,3 +1,5 @@
+using System;
+
 public enum TypeGrid {
     KrustyKrab,         // KrustyKrab (Start point)
     Lintasan,           // Lintasan
@@ -67,6 +69,10 @@ public class Point {
 
     public bool isAdjacent(Point p) {
         return (isLeft(p) || isRight(p) || isUp(p) || isDown(p));
+    }
+
+    public void print(){
+        Console.WriteLine("X: " + X + " Y: " + Y + " Type: " + Type + " Found: " + Found);
     }
 
 }
