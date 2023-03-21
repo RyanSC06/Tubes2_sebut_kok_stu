@@ -1,13 +1,13 @@
 public class Queue<T> {
-    private T[] buffer;
-    private int head;
-    private int tail;
+    public T[] buffer;
+    public int head;
+    public int tail;
 
     public Queue(int size) {
         buffer = new T[size];
         head = -1;
         tail = -1;
-        Console.WriteLine("Queue dibuat!");
+        // Console.WriteLine("Queue dibuat!");
     }
 
     ~Queue() {
@@ -24,7 +24,7 @@ public class Queue<T> {
             tail = tail + 1;
             buffer[tail] = element;
         }
-        Console.WriteLine("Elemen " + element + " ditambahkan!");
+        // Console.WriteLine("Elemen " + element + " ditambahkan!");
     }
 
     public T Dequeue() {
@@ -36,15 +36,23 @@ public class Queue<T> {
         } else {
             head = head + 1;
         }
-        Console.WriteLine("Elemen " + element + " dihapus!");
+        // Console.WriteLine("Elemen " + element + " dihapus!");
         return (element);
     }
 
-    public void displayQueue(Queue<T> Q) {
+    public void displayQueue() {
         for (int i = head; i < tail+1; i++) {
-            if (Q.buffer[i] != null) {
-                Console.WriteLine(Q.buffer[i]);
+            if (buffer[i] != null) {
+                Console.WriteLine(buffer[i]);
             }
+        }
+    }
+
+    public bool isEmpty() {
+        if (head == -1 && tail == -1) {
+            return (true);
+        } else {
+            return (false);
         }
     }
 }
