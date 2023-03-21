@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class DFS{
 
@@ -14,11 +15,21 @@ public class DFS{
 
     private int treasureCount = 0;
 
-    private int step = 0;
+    private int step = -1;
+
+    private TimeSpan time = new TimeSpan();
 
     public DFS(Graph g, Point source, int numOfTreasure){
             this.g = g;
+            var watch = new Stopwatch();
+            watch.Start();
             dfs(source, numOfTreasure);
+            watch.Stop();
+            time = watch.Elapsed;
+            Console.WriteLine("Exec time: " + time.TotalMilliseconds + " ms");
+            Console.WriteLine("Step: " + (path.Count - 1));
+            Console.WriteLine("Step: " + step);
+            Console.WriteLine("Node: " + pathVisited.Count);
             g.resetGraph();
     }
 
@@ -50,6 +61,10 @@ public class DFS{
                 }
             }
             // printListPath(pathStack.ToList());
+        }
+        if (pathStack.Count == 0){
+            System.Console.WriteLine("No path found");
+            return;
         }
         Point next = pathStack.Pop();
         while (next.Found){
