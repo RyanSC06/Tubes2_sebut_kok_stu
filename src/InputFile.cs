@@ -200,12 +200,15 @@ public class InputFile {
     }
     
     public static void Main (string[] args) {
-        string[] map = makeMap();
-        for (int i = 0; i < map.Length; i++) {
-            for (int j = 0; j < map.Length[0]; j++)
-            {
-                Console.WriteLine(map[i][j]);;
-            }
-        }
+        Graph g = makeGraph();
+        
+        // List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
+        // Console.WriteLine("\nJalur:");
+        // foreach (List<Point> lp in solution) {
+        //     DFS.printListPath(lp);
+        // }
+
+        List<Point> actualPath = MazeBFS.findPathBFS(g);
+        DFS.printListPath(actualPath);
     }
 }
