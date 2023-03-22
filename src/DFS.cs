@@ -21,15 +21,12 @@ public class DFS{
 
     public DFS(Graph g, Point source, int numOfTreasure){
             this.g = g;
+            g.resetGraph();
             var watch = new Stopwatch();
             watch.Start();
             dfs(source, numOfTreasure);
             watch.Stop();
             time = watch.Elapsed;
-            Console.WriteLine("Exec time: " + time.TotalMilliseconds + " ms");
-            Console.WriteLine("Step: " + (path.Count - 1));
-            Console.WriteLine("Step: " + step);
-            Console.WriteLine("Node: " + pathVisited.Count);
             g.resetGraph();
     }
 
@@ -68,6 +65,10 @@ public class DFS{
         }
         Point next = pathStack.Pop();
         while (next.Found){
+            if (pathStack.Count == 0){
+            System.Console.WriteLine("No path found");
+            return;
+            }
             next = pathStack.Pop();
         }
         dfs(next, numOfTreasure);
@@ -114,12 +115,35 @@ public class DFS{
         addBacktrackPathUtil(next);
     }
 
+    public List<Point> getFullPath(){
+        return path;
+    }
+
+    public List<Point> getDFSPath(){
+        return pathVisited;
+    }
+
+    public int getNodesVisited(){
+        return pathVisited.Count;
+    }
+
+    public int getStep(){
+        return step;
+    }
+
+    public double getTimeMs(){
+        return time.TotalMilliseconds;
+    }
+
+    public TimeSpan getTime(){
+        return time;
+    }
 
     public static void Main(string[] args){
         Graph input = InputFile.makeGraph();
 
-        input.printNodes();
-        input.printAdj();
+        // input.printNodes();
+        // input.printAdj();
 
         Point starting = InputFile.findStartingPoint(input);
         starting.print();
