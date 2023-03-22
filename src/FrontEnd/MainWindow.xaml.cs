@@ -26,6 +26,7 @@ namespace FrontEnd
         bool dfsStatus = false;
         string filepath = "";
         int width = 15, height = 15;
+        string[] fileMap;
         double duration = 100;
         double execTime;
 
@@ -55,46 +56,87 @@ namespace FrontEnd
                 {
                     filepath = dlg.FileName;
                     btnOpenFile.Content = System.IO.Path.GetFileName(filepath);
+                    map.Background = new SolidColorBrush(Colors.Black);
                     map.ColumnDefinitions.Clear();
                     map.RowDefinitions.Clear();
                     map.Children.Clear();
 
-                    string[] fileMap = InputFile.makeMap(filepath);
-                    height = fileMap.Length;
-                    width = fileMap[0].Length;
+                    fileMap = InputFile.makeMap(filepath);
 
-                    for (int i = 0; i < width; i++)
+                    if (fileMap[0] == "") 
                     {
-                        // Create a new column definition
-                        ColumnDefinition newColumn = new ColumnDefinition();
-                        newColumn.Width = new GridLength(1, GridUnitType.Star);
-
-                        // Add the column to the grid
-                        map.ColumnDefinitions.Add(newColumn);
-                    }
-
-                    for (int j = 0; j < height; j++)
+                        MessageBox.Show("Map is not valid!", "Error Message");
+                    } else
                     {
-                        // Create a new row definition
-                        RowDefinition newRow = new RowDefinition();
-                        newRow.Height = new GridLength(1, GridUnitType.Star);
+                        height = fileMap.Length;
+                        width= fileMap[0].Length;
 
-                        // Add the row to the grid
-                        map.RowDefinitions.Add(newRow);
-                    }
+                        /*map.Width = width;
+                        map.Height = height;*/
 
-                    for (int i = 0; i < width; i++)
-                    {
+                        for (int i = 0; i < width; i++)
+                        {
+                            // Create a new column definition
+                            ColumnDefinition newColumn = new ColumnDefinition();
+                            newColumn.Width = new GridLength(1, GridUnitType.Star);
+
+                            // Add the column to the grid
+                            map.ColumnDefinitions.Add(newColumn);
+                        }
+
                         for (int j = 0; j < height; j++)
                         {
-                            StackPanel panel = new StackPanel();
-                            panel.Background = new SolidColorBrush(Colors.Black);
-                            panel.HorizontalAlignment = HorizontalAlignment.Stretch;
-                            panel.VerticalAlignment = VerticalAlignment.Stretch;
-                            panel.Margin = new Thickness(0.5);
-                            map.Children.Add(panel);
-                            Grid.SetRow(panel, j);
-                            Grid.SetColumn(panel, i);
+                            // Create a new row definition
+                            RowDefinition newRow = new RowDefinition();
+                            newRow.Height = new GridLength(1, GridUnitType.Star);
+
+                            // Add the row to the grid
+                            map.RowDefinitions.Add(newRow);
+                        }
+
+                        for (int i = 0; i < height; i++)
+                        {
+                            for (int j = 0; j < width; j++)
+                            {
+                                StackPanel panel = new StackPanel();
+                                panel.HorizontalAlignment = HorizontalAlignment.Stretch;
+                                panel.VerticalAlignment = VerticalAlignment.Stretch;
+                                panel.Margin = new Thickness(0.5);
+
+                                if (fileMap[i][j] == 'K')
+                                {
+                                    Image myImage = new Image();
+                                    panel.Background = new SolidColorBrush(Colors.Red);
+                                    myImage.Source = new BitmapImage(new Uri("asset/start.png", UriKind.Relative));
+                                    myImage.Stretch = Stretch.Uniform;
+                                    /*myImage.HorizontalAlignment = HorizontalAlignment.Center;
+                                    myImage.VerticalAlignment = VerticalAlignment.Center;*/
+                                    panel.Children.Add(myImage);
+                                }
+                                else if (fileMap[i][j] == 'R')
+                                {
+                                    panel.Background = new SolidColorBrush(Colors.White);
+                                }
+                                else if (fileMap[i][j] == 'X')
+                                {
+                                    panel.Background = new SolidColorBrush(Colors.Black);
+                                }
+                                else
+                                {
+                                    Image myImage = new Image();
+                                    panel.Background = new SolidColorBrush(Colors.Gold);
+                                    myImage.Source = new BitmapImage(new Uri("asset/treasure.png", UriKind.Relative));
+                                    myImage.Stretch = Stretch.Uniform;
+                                    /*myImage.HorizontalAlignment = HorizontalAlignment.Center;
+                                    myImage.VerticalAlignment = VerticalAlignment.Center;*/
+                                    panel.Children.Add(myImage);
+                                }
+
+                                map.Children.Add(panel);
+                                Grid.SetRow(panel, i);
+                                Grid.SetColumn(panel, j);
+
+                            }
                         }
                     }
                 }

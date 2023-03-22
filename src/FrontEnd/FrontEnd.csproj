@@ -8,7 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="asset\start.png" />
+    <None Remove="asset\treasure.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="asset\background.jpg" />
+    <Resource Include="asset\start.png" />
+    <Resource Include="asset\treasure.png" />
   </ItemGroup>
 
 </Project>
