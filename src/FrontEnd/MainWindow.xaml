@@ -36,7 +36,7 @@
                             <TextBlock x:Name="durationValue" Text="{Binding ElementName=slDuration, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
                                      TextAlignment="Right" DockPanel.Dock="Right" Margin="4,2,4,2" Width="27"/>
                         </Border>
-                        <Slider Minimum="100" Maximum="3000" TickFrequency="100" IsSnapToTickEnabled="True" Name="slDuration" 
+                        <Slider Minimum="100" Maximum="3000" TickFrequency="100" IsSnapToTickEnabled="True" Name="slDuration" Value="500"
                                 Width="170" HorizontalAlignment="Left" Margin="0,0,5,0" Padding="0,0,5,0" ValueChanged="slDuration_ValueChanged" />
                     </DockPanel>
                     <Button x:Name="btnSearch" Margin="0,20,0,0" Content="Search!" Width="146" Height="32" Background="Black" Padding="0"
@@ -46,11 +46,11 @@
                                 <Setter Property="CornerRadius" Value="17"/>
                             </Style>
                         </Button.Resources>
-                    </Button> 
+                    </Button>
                 </StackPanel>
                 <Rectangle HorizontalAlignment="Stretch" Fill="Black" Width="2.3" Margin="13,2,13,2"/>
                 <StackPanel Orientation="Vertical" Margin="0" DockPanel.Dock="Right">
-                    <TextBlock Text="Output" FontSize="30" FontWeight="Medium" Padding="2"/>
+                    <TextBlock Text="Output" FontSize="30" FontWeight="Medium" Padding="2" x:Name="output"/>
                     <Border BorderBrush="Black" BorderThickness="2" Height="250" Width="250">
                         <Grid x:Name = "map" Background = "White" >
                             <Grid.ColumnDefinitions />
@@ -60,18 +60,19 @@
                     <TextBlock x:Name="route" TextWrapping="Wrap" Text="Route: " FontSize="20" Margin="4"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width = "Auto" MinWidth="150" />
+                            <ColumnDefinition Width = "13.7" />
+                            <ColumnDefinition Width="136.3"/>
                             <ColumnDefinition Width = "Auto" MinWidth="150"/>
-                            <ColumnDefinition Width = "Auto"/>                            
+                            <ColumnDefinition Width = "Auto"/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <Grid.RowDefinitions>
                             <RowDefinition Height = "*" />
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0" x:Name="stepLabel" Content="Steps: " FontSize="20"/>
-                        <Label Grid.Row="0" Grid.Column="1" x:Name="nodeLabel" Content="Nodes: " FontSize="20"/>
-                        <Label Grid.Row="0" Grid.Column="2" x:Name="execTimeLabel" Content="Execution Time: " FontSize="20"/>
+                        <Label Grid.Row="0" Grid.Column="0" x:Name="stepLabel" Content="Steps: " FontSize="20" HorizontalAlignment="Left" Width="150" Grid.ColumnSpan="2"/>
+                        <Label Grid.Row="0" Grid.Column="2" x:Name="nodeLabel" Content="Nodes: " FontSize="20"/>
+                        <Label Grid.Row="0" Grid.Column="3" x:Name="execTimeLabel" Content="Execution Time: " FontSize="20"/>
                     </Grid>
                 </StackPanel>
             </DockPanel>
@@ -79,5 +80,5 @@
     </StackPanel>
     <Window.Background>
         <ImageBrush ImageSource="/asset/background.jpg" Stretch="UniformToFill"></ImageBrush>
-    </Window.Background>    
+    </Window.Background>
 </Window>

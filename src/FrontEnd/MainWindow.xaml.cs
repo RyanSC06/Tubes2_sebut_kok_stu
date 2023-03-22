@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace FrontEnd
 {
@@ -22,22 +24,124 @@ namespace FrontEnd
     /// </summary>
     public partial class MainWindow : Window
     {
-        bool bfsStatus = false;
-        bool dfsStatus = false;
-        string filepath = "";
-        int width = 15, height = 15;
-        string[] fileMap;
-        double duration = 100;
-        double execTime;
+        private bool bfsStatus = false;
+        private bool dfsStatus = false;
+        private string filepath = "";
+        private int width = 15, height = 15;
+        private string[] fileMap;
+        private Graph graph;
+        private double duration = 500;
+        private double execTime;
+        private List<Point> fullpath;
+        private List<Point> path;
+        private DispatcherTimer _timer;
+        private int idx = 0;
+        private int lenFullPath = 0;
+        private int lenPath = 0;
+        private StackPanel changedPanel = null;
 
         public MainWindow()
         {
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(duration);
+            _timer.Tick += Timer_Tick;
+        }
+
+        private void makeMap()
+        {
+            btnOpenFile.Content = System.IO.Path.GetFileName(filepath);
+            map.Background = new SolidColorBrush(Colors.Black);
+            map.ColumnDefinitions.Clear();
+            map.RowDefinitions.Clear();
+            map.Children.Clear();
+            height = fileMap.Length;
+            width = fileMap[0].Length;
+
+            route.Text = "Route: ";
+            stepLabel.Content = "Steps: ";
+            nodeLabel.Content = "Nodes: ";
+            execTimeLabel.Content = "Execution Time: ";
+
+            /*map.Width = width;
+            map.Height = height;*/
+
+            for (int i = 0; i < width; i++)
+            {
+                // Create a new column definition
+                ColumnDefinition newColumn = new ColumnDefinition();
+                newColumn.Width = new GridLength(1, GridUnitType.Star);
+
+                // Add the column to the grid
+                map.ColumnDefinitions.Add(newColumn);
+            }
+
+            for (int j = 0; j < height; j++)
+            {
+                // Create a new row definition
+                RowDefinition newRow = new RowDefinition();
+                newRow.Height = new GridLength(1, GridUnitType.Star);
+
+                // Add the row to the grid
+                map.RowDefinitions.Add(newRow);
+            }
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    StackPanel panel = new StackPanel();
+                    panel.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    panel.VerticalAlignment = VerticalAlignment.Stretch;
+                    panel.Margin = new Thickness(0.5);
+
+                    string newPanelName = "panel" + i.ToString() + j.ToString();
+                    panel.SetValue(FrameworkElement.NameProperty, newPanelName);
+
+                    if (fileMap[i][j] == 'K')
+                    {
+                        Image myImage = new Image();
+                        panel.Background = new SolidColorBrush(Colors.Red);
+                        myImage.Source = new BitmapImage(new Uri("asset/start.png", UriKind.Relative));
+                        myImage.Stretch = Stretch.Uniform;
+                        /*myImage.HorizontalAlignment = HorizontalAlignment.Center;
+                        myImage.VerticalAlignment = VerticalAlignment.Center;*/
+                        panel.Children.Add(myImage);
+                    }
+                    else if (fileMap[i][j] == 'R')
+                    {
+                        panel.Background = new SolidColorBrush(Colors.White);
+                    }
+                    else if (fileMap[i][j] == 'X')
+                    {
+                        panel.Background = new SolidColorBrush(Colors.Black);
+                    }
+                    else
+                    {
+                        Image myImage = new Image();
+                        var newColor = System.Windows.Media.Color.FromRgb(255, 223, 0);
+                        panel.Background = new SolidColorBrush(newColor);
+                        myImage.Source = new BitmapImage(new Uri("asset/treasure.png", UriKind.Relative));
+                        myImage.Stretch = Stretch.Uniform;
+                        myImage.HorizontalAlignment = HorizontalAlignment.Center;
+                        myImage.VerticalAlignment = VerticalAlignment.Center;
+                        panel.Children.Add(myImage);
+                    }
+
+                    map.Children.Add(panel);
+                    Grid.SetRow(panel, i);
+                    Grid.SetColumn(panel, j);
+
+                }
+            }
         }
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
         {
+            idx = 0;
+            changedPanel = null;
+            _timer.Stop();
             // Create OpenFileDialog 
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
@@ -54,90 +158,16 @@ namespace FrontEnd
             {   
                 if (filepath != dlg.FileName)
                 {
-                    filepath = dlg.FileName;
-                    btnOpenFile.Content = System.IO.Path.GetFileName(filepath);
-                    map.Background = new SolidColorBrush(Colors.Black);
-                    map.ColumnDefinitions.Clear();
-                    map.RowDefinitions.Clear();
-                    map.Children.Clear();
+                    fileMap = InputFile.makeMap(dlg.FileName);
 
-                    fileMap = InputFile.makeMap(filepath);
-
-                    if (fileMap[0] == "") 
+                    if (fileMap[0] == "-1") 
                     {
                         MessageBox.Show("Map is not valid!", "Error Message");
                     } else
                     {
-                        height = fileMap.Length;
-                        width= fileMap[0].Length;
-
-                        /*map.Width = width;
-                        map.Height = height;*/
-
-                        for (int i = 0; i < width; i++)
-                        {
-                            // Create a new column definition
-                            ColumnDefinition newColumn = new ColumnDefinition();
-                            newColumn.Width = new GridLength(1, GridUnitType.Star);
-
-                            // Add the column to the grid
-                            map.ColumnDefinitions.Add(newColumn);
-                        }
-
-                        for (int j = 0; j < height; j++)
-                        {
-                            // Create a new row definition
-                            RowDefinition newRow = new RowDefinition();
-                            newRow.Height = new GridLength(1, GridUnitType.Star);
-
-                            // Add the row to the grid
-                            map.RowDefinitions.Add(newRow);
-                        }
-
-                        for (int i = 0; i < height; i++)
-                        {
-                            for (int j = 0; j < width; j++)
-                            {
-                                StackPanel panel = new StackPanel();
-                                panel.HorizontalAlignment = HorizontalAlignment.Stretch;
-                                panel.VerticalAlignment = VerticalAlignment.Stretch;
-                                panel.Margin = new Thickness(0.5);
-
-                                if (fileMap[i][j] == 'K')
-                                {
-                                    Image myImage = new Image();
-                                    panel.Background = new SolidColorBrush(Colors.Red);
-                                    myImage.Source = new BitmapImage(new Uri("asset/start.png", UriKind.Relative));
-                                    myImage.Stretch = Stretch.Uniform;
-                                    /*myImage.HorizontalAlignment = HorizontalAlignment.Center;
-                                    myImage.VerticalAlignment = VerticalAlignment.Center;*/
-                                    panel.Children.Add(myImage);
-                                }
-                                else if (fileMap[i][j] == 'R')
-                                {
-                                    panel.Background = new SolidColorBrush(Colors.White);
-                                }
-                                else if (fileMap[i][j] == 'X')
-                                {
-                                    panel.Background = new SolidColorBrush(Colors.Black);
-                                }
-                                else
-                                {
-                                    Image myImage = new Image();
-                                    panel.Background = new SolidColorBrush(Colors.Gold);
-                                    myImage.Source = new BitmapImage(new Uri("asset/treasure.png", UriKind.Relative));
-                                    myImage.Stretch = Stretch.Uniform;
-                                    /*myImage.HorizontalAlignment = HorizontalAlignment.Center;
-                                    myImage.VerticalAlignment = VerticalAlignment.Center;*/
-                                    panel.Children.Add(myImage);
-                                }
-
-                                map.Children.Add(panel);
-                                Grid.SetRow(panel, i);
-                                Grid.SetColumn(panel, j);
-
-                            }
-                        }
+                        filepath = dlg.FileName;
+                        makeMap();
+                        graph = InputFile.makeGraph(filepath);
                     }
                 }
             }
@@ -158,6 +188,47 @@ namespace FrontEnd
         private void slDuration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             duration = slDuration.Value;
+            if (_timer != null)
+            _timer.Interval = TimeSpan.FromMilliseconds(duration);
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (idx < lenPath)
+            {
+                if (changedPanel != null)
+                {
+                    if (path[idx-1].Type == TypeGrid.Lintasan)
+                    {
+                        var newColor = System.Windows.Media.Color.FromRgb(252, 233, 98);
+                        changedPanel.Background = new SolidColorBrush(newColor);
+                    }
+                    
+                }
+
+                changedPanel = (StackPanel)LogicalTreeHelper.FindLogicalNode(map, "panel" + path[idx].X.ToString() + path[idx].Y.ToString());
+
+                if (path[idx].Type == TypeGrid.Lintasan)
+                {
+                    var newColor = System.Windows.Media.Color.FromRgb(117, 214, 255);
+                    changedPanel.Background = new SolidColorBrush(newColor);
+                }
+                if (path[idx].Type == TypeGrid.Treasure)
+                {
+                    var newColor = System.Windows.Media.Color.FromRgb(176, 154, 0);
+                    changedPanel.Background = new SolidColorBrush(newColor);
+                }
+
+
+                idx++;
+
+            }
+            else
+            {
+                _timer.Stop();
+                idx = 0;
+                changedPanel = null;
+            }
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -168,7 +239,39 @@ namespace FrontEnd
             else if ( !bfsStatus && !dfsStatus) {
                 MessageBox.Show("You haven't choose any file. Pick one, BFS or DFS", "Error Message");
             } else {
+                makeMap();
+                if (dfsStatus)
+                {
+                    Point starting = InputFile.findStartingPoint(graph);
+                    int treasure = InputFile.findNumberOfTreasure(graph);
+                    DFS dfs2 = new DFS(graph, starting, treasure);
+                    fullpath = dfs2.getFullPath();
+                    path = dfs2.getDFSPath();
+                    stepLabel.Content = "Steps: " + dfs2.getStep();
+                    nodeLabel.Content = "Nodes: " + dfs2.getNodesVisited();
+                    execTimeLabel.Content = "Execution Time: " + dfs2.getTimeMicroS() + " μs";
 
+                } else
+                {
+                    var watch = new Stopwatch();
+                    watch.Start();
+                    List<List<Point>> res = MazeBFS.findCheckedBFS(graph);
+                    watch.Stop();
+                    TimeSpan time = watch.Elapsed;
+
+                    path = MazeBFS.findPathBFS(graph);
+                    fullpath = res[1];
+
+                    stepLabel.Content = "Steps: " + fullpath.Count;
+                    nodeLabel.Content = "Nodes: " + path.Count;
+                    execTimeLabel.Content = "Execution Time: " + time.TotalMicroseconds + " μs";
+                }
+                lenFullPath = fullpath.Count;
+                lenPath = path.Count;
+                _timer.Stop();
+                idx = 0;
+                changedPanel = null;
+                _timer.Start();
             }
         }
     }

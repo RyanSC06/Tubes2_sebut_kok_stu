@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using System;
-
+using System.Collections.Generic;
 
 public class Graph{
 
@@ -71,6 +70,15 @@ public class Graph{
         }
     }
 
+    public static void printListPath(List<Point> listPath){
+        foreach (Point node in listPath){
+                Console.Write(node.X + "," + node.Y);
+                if (node != listPath[listPath.Count-1])
+                Console.Write(" -> ");
+        }
+        Console.WriteLine();
+    }
+
     /*public static void Main (string[] args){
         // point test
         Point p = new Point(1, 2, TypeGrid.KrustyKrab);
@@ -121,6 +129,6 @@ public class Graph{
         Console.WriteLine(g.getNeighbours(p3).Count);
         Console.WriteLine(g.getNeighbours(p4).Count);
 
-    }*/
-
+    }
+*/
 }

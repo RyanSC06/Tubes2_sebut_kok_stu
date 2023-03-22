@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Shapes;
 
 public class InputFile {
@@ -57,9 +58,8 @@ public class InputFile {
     }
 
     public static string[] input(string path) {
-
         if (File.Exists(path)) {
-            string[] map = File.ReadAllLines(path);
+            string[] map = File.ReadAllLines(path).Select(line => line.Trim()).ToArray();
             if (isMapValid(map)) {
                 Console.WriteLine("\nPeta Anda:");
                 foreach (string line in map) {
@@ -68,14 +68,14 @@ public class InputFile {
                 return (map);
             } else {
                 string[] mapNotValid = new string[1];
-                mapNotValid[0] = "";
+                mapNotValid[0] = "-1";
                 Console.WriteLine("Maaf, peta Anda tidak valid.");
                 return (mapNotValid);
             }
 
         } else {
             string[] mapNotExist = new string[1];
-            mapNotExist[0] = "";
+            mapNotExist[0] = "-1";
             Console.WriteLine("Maaf, file tidak ditemukan.");
             return (mapNotExist);
         }
@@ -94,15 +94,25 @@ public class InputFile {
 
     public static string[] makeMap(string path) {
         string[] actualMap = input(path);        
-        string[] map = new string[actualMap.Length];
-        for (int r = 0; r < actualMap.Length; r++) {
-            for (int c = 0; c < actualMap[0].Length; c++) {
-                if (actualMap[r][c] != ' ') {
-                    map[r] = map[r] + actualMap[r][c];
+        if (actualMap[0] == "-1")
+        {
+            return actualMap;
+        } else
+        {
+            string[] map = new string[actualMap.Length];
+            for (int r = 0; r < actualMap.Length; r++)
+            {
+                for (int c = 0; c < actualMap[0].Length; c++)
+                {
+                    if (actualMap[r][c] != ' ')
+                    {
+                        map[r] = map[r] + actualMap[r][c];
+                    }
                 }
             }
+            return map;
         }
-        return map;        
+                 
     }
 
     public static Graph makeGraph(string path) {
@@ -115,7 +125,7 @@ public class InputFile {
                 }
             }
         }
-        if (map.Length != 1) {
+        if (map[0] != "-1") {
             List<Point> nodes = new List<Point>();
             for (int i = 0; i < map.Length; i++) {
                 for (int j = 0; j < map[0].Length; j++) {
@@ -198,13 +208,15 @@ public class InputFile {
     }
     
     // public static void Main (string[] args) {
-    //     Graph g = makeGraph(path);
-    //     foreach (var kvp in g.AdjList) {
-    //         Console.WriteLine("(" + kvp.Key.X + "," + kvp.Key.Y + ")");
-    //         foreach (Point val in kvp.Value) {
-    //             Console.WriteLine("(" + val.X + "," + val.Y + ")");
-    //         }
-    //         Console.WriteLine("");
+    //     Graph g = makeGraph();
+        
+    //     List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
+    //     Console.WriteLine("\nJalur:");
+    //     foreach (List<Point> lp in solution) {
+    //         Graph.printListPath(lp);
     //     }
+
+    //     List<Point> actualPath = MazeBFS.findPathBFS(g);
+    //     Graph.printListPath(actualPath);
     // }
 }
