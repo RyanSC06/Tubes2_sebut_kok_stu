@@ -61,7 +61,7 @@ public class InputFile {
         Console.WriteLine(textFile);
 
         if (File.Exists(textFile)) {
-            string[] map = File.ReadAllLines(textFile);
+            string[] map = File.ReadAllLines(textFile).Select(line => line.Trim()).ToArray();
             if (isMapValid(map)) {
                 Console.WriteLine("\nPeta Anda:");
                 foreach (string line in map) {
@@ -70,14 +70,14 @@ public class InputFile {
                 return (map);
             } else {
                 string[] mapNotValid = new string[1];
-                mapNotValid[0] = "";
+                mapNotValid[0] = "-1";
                 Console.WriteLine("Maaf, peta Anda tidak valid.");
                 return (mapNotValid);
             }
 
         } else {
             string[] mapNotExist = new string[1];
-            mapNotExist[0] = "";
+            mapNotExist[0] = "-1";
             Console.WriteLine("Maaf, file tidak ditemukan.");
             return (mapNotExist);
         }
@@ -117,7 +117,7 @@ public class InputFile {
                 }
             }
         }
-        if (map.Length != 1) {
+        if (map[0] != "-1") {
             List<Point> nodes = new List<Point>();
             for (int i = 0; i < map.Length; i++) {
                 for (int j = 0; j < map[0].Length; j++) {
@@ -200,12 +200,15 @@ public class InputFile {
     }
     
     public static void Main (string[] args) {
-        string[] map = makeMap();
-        for (int i = 0; i < map.Length; i++) {
-            for (int j = 0; j < map.Length[0]; j++)
-            {
-                Console.WriteLine(map[i][j]);;
-            }
+        Graph g = makeGraph();
+        
+        List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
+        Console.WriteLine("\nJalur:");
+        foreach (List<Point> lp in solution) {
+            Graph.printListPath(lp);
         }
+
+        List<Point> actualPath = MazeBFS.findPathBFS(g);
+        Graph.printListPath(actualPath);
     }
 }

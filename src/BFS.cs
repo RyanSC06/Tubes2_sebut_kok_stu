@@ -2,103 +2,136 @@ using System;
 using System.IO;
 
 public class MazeBFS{
-    public static List<Point> findTreasureBFS (Graph g) {
-        int num_T = InputFile.findNumberOfTreasure(g);
-        int num_found = 0;
+    public static List<List<Point>> findCheckedBFS (Graph g) {
+        if (g.Nodes.Count != 0) {
+            g.resetGraph();
+            int num_T = InputFile.findNumberOfTreasure(g);
+            int num_found = 0;
 
-        Queue<Point> QP = new Queue<Point>(g.Nodes.Count + 50);
-        Queue<List<Point>> QLP = new Queue<List<Point>>(g.Nodes.Count + 50);
+            Queue<Point> QP = new Queue<Point>(g.Nodes.Count * 10);
+            Queue<List<Point>> QLP = new Queue<List<Point>>(g.Nodes.Count * 10);
+            List<Point> checkedPath = new List<Point>();
 
-        //INISIALISASI (PENGECEKAN PERTAMA)
-        Point now = InputFile.findStartingPoint(g);
-        now.Found = true;
-
-        List<Point> path = new List<Point>();
-        path.Add(now);
-        
-        foreach (Point point in g.AdjList[now]) {
-            if (point.Found == false) {
-                QP.Enqueue(point);
-                Console.Write("[" + point.X + "," + point.Y + "]  melalui  ");
-                QLP.Enqueue(path);
-                foreach(Point x in path) {
-                    Console.Write("[" + x.X + "," + x.Y + "], ");
-                }
-                Console.Write("\n\n");
-            }
-        }
-
-        Console.WriteLine("ISI QUEUE 1:");
-            for (int i = QP.head; i < QP.tail+1; i++) {
-                if (QP.buffer[i] != null) {
-                    Console.Write("[" + QP.buffer[i].X + "," + QP.buffer[i].Y + "], ");
-                }
-            }
-
-            Console.WriteLine("\nISI QUEUE 2:");
-            for (int i = QLP.head; i < QLP.tail+1; i++) {
-                Console.Write("[");
-                if (QLP.buffer[i] != null) {
-                    foreach (Point x in QLP.buffer[i]) {
-                        Console.Write("[" + x.X + "," + x.Y + "], ");
-                    }
-                }
-                Console.Write("]\n\n");
-            }
-            Console.WriteLine("#Treasure found = " + num_found);
-            Console.WriteLine("\n\n\n");
-
-
-        //PENGECEKAN BERIKUTNYA
-        while ((num_found < num_T) && (QP.isEmpty() == false)) {
-            now = QP.Dequeue();
+            //INISIALISASI (PENGECEKAN PERTAMA)
+            Point now = InputFile.findStartingPoint(g);
             now.Found = true;
 
-            List<Point> path1 = new List<Point>(QLP.Dequeue());
-            path1.Add(now);
-            path = path1;
-
-            if (now.Type == TypeGrid.Treasure) {
-                for (int i = 0; i <= QLP.tail; i++) {
-                    QLP.buffer[i] = path1;
-                }
-                num_found = num_found + 1;
-            }
-
-
+            List<Point> path = new List<Point>();
+            path.Add(now);
+            checkedPath.Add(now);
+            
             foreach (Point point in g.AdjList[now]) {
                 if (point.Found == false) {
                     QP.Enqueue(point);
-                    Console.Write("[" + point.X + "," + point.Y + "]  melalui  ");
-                    QLP.Enqueue(path1);
-                    foreach(Point x in path1) {
-                        Console.Write("[" + x.X + "," + x.Y + "], ");
-                    }
-                    Console.Write("\n\n");
+                    QLP.Enqueue(path);
                 }
             }
 
-            Console.WriteLine("ISI QUEUE 1:");
-            for (int i = QP.head; i < QP.tail+1; i++) {
-                if (QP.buffer[i] != null) {
-                    Console.Write("[" + QP.buffer[i].X + "," + QP.buffer[i].Y + "], ");
+
+            //PENGECEKAN BERIKUTNYA
+            while ((num_found < num_T) && (QP.isEmpty() == false)) {
+                now = QP.Dequeue();
+                now.Found = true;
+
+                List<Point> pathOther = new List<Point>(QLP.Dequeue());
+                pathOther.Add(now);
+                path = pathOther;
+                checkedPath.Add(now);
+
+                if (now.Type == TypeGrid.Treasure) {
+                    for (int i = 0; i <= QLP.tail; i++) {
+                        List<Point> pathTreasure = new List<Point>(pathOther);
+                        QLP.buffer[i] = pathTreasure;
+                    }
+                    num_found = num_found + 1;
+                }
+
+
+                foreach (Point point in g.AdjList[now]) {
+                    if (point.Found == false) {
+                        QP.Enqueue(point);
+                        List<Point> pathEnqueue = new List<Point>(pathOther);
+                        QLP.Enqueue(pathEnqueue);
+                    }
                 }
             }
 
-            Console.WriteLine("\n\nISI QUEUE 2:");
-            for (int i = QLP.head; i < QLP.tail+1; i++) {
-                Console.Write("[");
-                if (QLP.buffer[i] != null) {
-                    foreach (Point x in QLP.buffer[i]) {
-                        Console.Write("[" + x.X + "," + x.Y + "], ");
-                    }
-                }
-                Console.Write("]\n\n");
-            }
-            Console.WriteLine("#Treasure found = " + num_found);
-            Console.WriteLine("\n\n\n");
+            List<List<Point>> returnValue = new List<List<Point>> ();
+            returnValue.Add(path);
+            returnValue.Add(checkedPath);
+            return (returnValue);
+        } else {
+            List<Point> checkedPath = new List<Point>();
+            List<Point> path = new List<Point>();
+            List<List<Point>> returnValue = new List<List<Point>> ();
+            returnValue.Add(path);
+            returnValue.Add(checkedPath);
+            return (returnValue);
         }
+    }
 
-        return (path);
+
+    public static List<Point> findPathBFS (Graph g) {
+        if (g.Nodes.Count != 0) {
+            g.resetGraph();
+            int num_T = InputFile.findNumberOfTreasure(g);
+            int num_found = 0;
+
+            Queue<Point> QP = new Queue<Point>(g.Nodes.Count * 10);
+            Queue<List<Point>> QLP = new Queue<List<Point>>(g.Nodes.Count * 10);
+
+            //INISIALISASI (PENGECEKAN PERTAMA)
+            Point now = InputFile.findStartingPoint(g);
+            now.Found = true;
+
+            List<Point> path = new List<Point>();
+            path.Add(now);
+            
+            foreach (Point point in g.AdjList[now]) {
+                if (point.Found == false) {
+                    QP.Enqueue(point);
+                    QLP.Enqueue(path);
+                }
+            }
+
+
+            //PENGECEKAN BERIKUTNYA
+            while ((num_found < num_T) && (QP.isEmpty() == false)) {
+                now = QP.Dequeue();
+                now.Found = true;
+
+                List<Point> pathOther = new List<Point>(QLP.Dequeue());
+                pathOther.Add(now);
+                path = pathOther;
+
+                if (now.Type == TypeGrid.Treasure) {
+                    foreach (Point p in g.Nodes) {
+                        if (p.Type != TypeGrid.Treasure) {
+                            p.Found = false;
+                        }
+                    }
+                    
+                    while (QP.head != -1) {
+                        Point trash = QP.Dequeue();
+                        List<Point> otherTrash = QLP.Dequeue();
+                    }
+                    num_found = num_found + 1;
+                }
+
+
+                foreach (Point point in g.AdjList[now]) {
+                    if (point.Found == false) {
+                        QP.Enqueue(point);
+                        List<Point> pathEnqueue = new List<Point>(pathOther);
+                        QLP.Enqueue(pathEnqueue);
+                    }
+                }
+            }
+
+            return (path);
+        } else {
+            List<Point> path = new List<Point>();
+            return (path);
+        }
     }
 }

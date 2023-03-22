@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class DFS{
 
@@ -14,11 +15,21 @@ public class DFS{
 
     private int treasureCount = 0;
 
-    private int step = 0;
+    private int step = -1;
+
+    private TimeSpan time = new TimeSpan();
 
     public DFS(Graph g, Point source, int numOfTreasure){
             this.g = g;
+            var watch = new Stopwatch();
+            watch.Start();
             dfs(source, numOfTreasure);
+            watch.Stop();
+            time = watch.Elapsed;
+            Console.WriteLine("Exec time: " + time.TotalMilliseconds + " ms");
+            Console.WriteLine("Step: " + (path.Count - 1));
+            Console.WriteLine("Step: " + step);
+            Console.WriteLine("Node: " + pathVisited.Count);
             g.resetGraph();
     }
 
@@ -35,7 +46,7 @@ public class DFS{
         }
         if (g.getNeighboursNotVisited(source) == 0){
             addBacktrackPath(source);
-            printListPath(backtrackPath);
+            Graph.printListPath(backtrackPath);
             foreach (Point node in backtrackPath){
                 path.Add(node);
                 step++;
@@ -50,6 +61,10 @@ public class DFS{
                 }
             }
             // printListPath(pathStack.ToList());
+        }
+        if (pathStack.Count == 0){
+            System.Console.WriteLine("No path found");
+            return;
         }
         Point next = pathStack.Pop();
         while (next.Found){
@@ -99,15 +114,6 @@ public class DFS{
         addBacktrackPathUtil(next);
     }
 
-    public static void printListPath(List<Point> listPath){
-        foreach (Point node in listPath){
-                Console.Write(node.X + "," + node.Y);
-                if (node != listPath[listPath.Count-1])
-                Console.Write(" -> ");
-        }
-        Console.WriteLine();
-    }
-
 
     public static void Main(string[] args){
         Graph input = InputFile.makeGraph();
@@ -120,8 +126,8 @@ public class DFS{
         int treasure = InputFile.findNumberOfTreasure(input);
         Console.WriteLine(treasure);
         DFS dfs2 = new DFS(input, starting, treasure);
-        printListPath(dfs2.path);
-        printListPath(dfs2.pathVisited);
+        Graph.printListPath(dfs2.path);
+        Graph.printListPath(dfs2.pathVisited);
 
         // List<Point> bfs = MazeBFS.findTreasureBFS(input);
         // printListPath(bfs);
