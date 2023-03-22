@@ -202,13 +202,13 @@ public class InputFile {
     public static void Main (string[] args) {
         Graph g = makeGraph();
         
-        // List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
-        // Console.WriteLine("\nJalur:");
-        // foreach (List<Point> lp in solution) {
-        //     DFS.printListPath(lp);
-        // }
+        List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
+        Console.WriteLine("\nJalur:");
+        foreach (List<Point> lp in solution) {
+            Graph.printListPath(lp);
+        }
 
         List<Point> actualPath = MazeBFS.findPathBFS(g);
-        DFS.printListPath(actualPath);
+        Graph.printListPath(actualPath);
     }
 }

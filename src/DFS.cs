@@ -46,7 +46,7 @@ public class DFS{
         }
         if (g.getNeighboursNotVisited(source) == 0){
             addBacktrackPath(source);
-            printListPath(backtrackPath);
+            Graph.printListPath(backtrackPath);
             foreach (Point node in backtrackPath){
                 path.Add(node);
                 step++;
@@ -114,15 +114,6 @@ public class DFS{
         addBacktrackPathUtil(next);
     }
 
-    public static void printListPath(List<Point> listPath){
-        foreach (Point node in listPath){
-                Console.Write(node.X + "," + node.Y);
-                if (node != listPath[listPath.Count-1])
-                Console.Write(" -> ");
-        }
-        Console.WriteLine();
-    }
-
 
     public static void Main(string[] args){
         Graph input = InputFile.makeGraph();
@@ -135,8 +126,8 @@ public class DFS{
         int treasure = InputFile.findNumberOfTreasure(input);
         Console.WriteLine(treasure);
         DFS dfs2 = new DFS(input, starting, treasure);
-        printListPath(dfs2.path);
-        printListPath(dfs2.pathVisited);
+        Graph.printListPath(dfs2.path);
+        Graph.printListPath(dfs2.pathVisited);
 
         // List<Point> bfs = MazeBFS.findTreasureBFS(input);
         // printListPath(bfs);
