@@ -61,7 +61,7 @@ public class InputFile {
         Console.WriteLine(textFile);
 
         if (File.Exists(textFile)) {
-            string[] map = File.ReadAllLines(textFile);
+            string[] map = File.ReadAllLines(textFile).Select(line => line.Trim()).ToArray();
             if (isMapValid(map)) {
                 Console.WriteLine("\nPeta Anda:");
                 foreach (string line in map) {
