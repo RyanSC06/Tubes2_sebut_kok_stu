@@ -57,7 +57,9 @@
                             <Grid.RowDefinitions />
                         </Grid>
                     </Border>
-                    <TextBlock x:Name="route" TextWrapping="Wrap" Text="Route: " FontSize="20" Margin="4"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="62" >
+                        <TextBlock x:Name="route" TextWrapping="Wrap" Text="Route: " FontSize="20" Margin="4" />
+                    </ScrollViewer>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width = "13.7" />
