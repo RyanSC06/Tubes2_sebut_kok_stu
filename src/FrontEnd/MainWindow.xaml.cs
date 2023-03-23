@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.Data;
 
 namespace FrontEnd
 {
@@ -231,6 +232,39 @@ namespace FrontEnd
             }
         }
 
+        private string makeRoute(List<Point> fullpath)
+        {
+            string res = "";
+            for (int i = 0; i < fullpath.Count-1; i++)
+            {
+                if (i != 0)
+                {
+                    res += " - ";
+                }
+                if (fullpath[i].X == fullpath[i+1].X)
+                {
+                    if (fullpath[i].Y < fullpath[i+1].Y)
+                    {
+                        res += "R";
+                    } else
+                    {
+                        res += "L";
+                    }
+                } else
+                {
+                    if (fullpath[i].X < fullpath[i + 1].X)
+                    {
+                        res += "D";
+                    }
+                    else
+                    {
+                        res += "U";
+                    }
+                }
+            }
+            return res;
+        }
+
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             if (filepath == "") {
@@ -259,13 +293,15 @@ namespace FrontEnd
                     watch.Stop();
                     TimeSpan time = watch.Elapsed;
 
-                    path = MazeBFS.findPathBFS(graph);
-                    fullpath = res[1];
+                    path = res[1];
+                    fullpath = MazeBFS.findPathBFS(graph);
+                    
 
-                    stepLabel.Content = "Steps: " + fullpath.Count;
+                    stepLabel.Content = "Steps: " + (fullpath.Count - 1);
                     nodeLabel.Content = "Nodes: " + path.Count;
                     execTimeLabel.Content = "Execution Time: " + time.TotalMicroseconds + " μs";
                 }
+                route.Text = "Route: " + makeRoute(fullpath);
                 lenFullPath = fullpath.Count;
                 lenPath = path.Count;
                 _timer.Stop();
