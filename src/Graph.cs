@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 public class Graph{
 
-    public List<Point> nodes;
+    private List<Point> nodes;
 
     public List<Point> Nodes {
         get { return nodes; }
         set { nodes = value; }
     }
 
-    public Dictionary<Point,List<Point>> adjList;
+    private Dictionary<Point,List<Point>> adjList;
 
     public Dictionary<Point, List<Point>> AdjList {
         get { return adjList; }
@@ -18,6 +18,7 @@ public class Graph{
     }
 
     public Graph(List<Point> nodes){
+        // membuat graph dengan list of nodes
         this.nodes = nodes;
         adjList = new Dictionary<Point, List<Point>>();
         foreach (Point node in nodes){
@@ -26,10 +27,12 @@ public class Graph{
     }
 
     public void addEdge(Point source, Point destination){
+        // menambahkan edge dari source ke destination
         adjList[source].Add(destination);
     }
 
     public void addEdge(Point source, List<Point> destination){
+        // menambahkan edge dari source ke elemen destination
         adjList[source].AddRange(destination);
     }
 
@@ -38,6 +41,7 @@ public class Graph{
     }
 
     public int getNeighboursNotVisited(Point node){
+        // mengembalikan jumlah tetangga yang belum dikunjungi
         int n = 0;
         foreach (Point p in adjList[node]){
             if (!p.Found){

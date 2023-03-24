@@ -11,6 +11,7 @@ public class InputFile {
         bool isKrustyThere = false;
 
         for (int i = 0; i < map.Length; i++) {
+            // Cek apakah peta hanya terdiri dari karakter 'T', 'R', 'X', 'K', dan ' '
             for (int j = 0; j < map[0].Length; j++) {
                 if (j % 2 == 0) {
                     if (map[i][j] == 'K' && isKrustyThere == false) {
@@ -32,6 +33,7 @@ public class InputFile {
         }
 
         if (trueChar && isKrustyThere) {
+            // Peta valid
             return (true);
         } else {
             return (false);
@@ -58,7 +60,10 @@ public class InputFile {
     }
 
     public static string[] input(string path) {
+        // fungsi menerima input berupa path file
+        // mengembalikan peta dalam bentuk array of string 
         if (File.Exists(path)) {
+            // File ada
             string[] map = File.ReadAllLines(path).Select(line => line.Trim()).ToArray();
             if (isMapValid(map)) {
                 Console.WriteLine("\nPeta Anda:");
@@ -74,6 +79,7 @@ public class InputFile {
             }
 
         } else {
+            // File tidak ada
             string[] mapNotExist = new string[1];
             mapNotExist[0] = "-1";
             Console.WriteLine("Maaf, file tidak ditemukan.");
@@ -82,6 +88,7 @@ public class InputFile {
     }
 
     public static int findNodeIdx(List<Point> LP, int idx_row, int idx_col) {
+        // Fungsi untuk mencari indeks node pada list of nodes
         for (int i = 0; i < LP.Count; i++) {
             if (LP[i].X == idx_row && LP[i].Y == idx_col) {
                 return (i);
@@ -93,6 +100,8 @@ public class InputFile {
     }
 
     public static string[] makeMap(string path) {
+        // fungsi menerima input berupa path file
+        // mengembalikan peta dalam bentuk array of string yang sudah dirapikan (tanpa spasi)
         string[] actualMap = input(path);        
         if (actualMap[0] == "-1")
         {
@@ -116,6 +125,8 @@ public class InputFile {
     }
 
     public static Graph makeGraph(string path) {
+        // fungsi menerima input berupa path file
+        // mengembalikan graph dari peta masukan
         string[] actualMap = input(path);
         string[] map = new string[actualMap.Length];
         for (int r = 0; r < actualMap.Length; r++) {
@@ -126,8 +137,10 @@ public class InputFile {
             }
         }
         if (map[0] != "-1") {
+            // map valid
             List<Point> nodes = new List<Point>();
             for (int i = 0; i < map.Length; i++) {
+                // konversi peta ke list of nodes
                 for (int j = 0; j < map[0].Length; j++) {
                     Point P = new Point(-1, -1, TypeGrid.X);
                     if (map[i][j] == 'K') {
@@ -146,8 +159,11 @@ public class InputFile {
             int k = 0;
             Graph G = new Graph(nodes);
             for (int i = 0; i < map.Length; i++) {
+                // konversi peta ke list of edges
                 for (int j = 0; j < map[0].Length; j++) {
                     if (map[i][j] != ' ' && map[i][j] != 'X') {
+                        // jika bukan spasi dan bukan X
+                        // prioritas arah lintasan: kanan, bawah, kiri, atas
                         if (isIdxValid (map, i, j+1)) {
                             if (isLocationReachable (map, i, j+1)) {
                                 G.addEdge(G.Nodes[k], G.Nodes[findNodeIdx(G.Nodes, i, j+1)]);
@@ -179,6 +195,7 @@ public class InputFile {
             return (G);
 
         } else {
+            // map tidak valid
             List<Point> nodes = new List<Point>();
             Graph G = new Graph(nodes);
             // do nothing
@@ -187,6 +204,8 @@ public class InputFile {
     }
 
     public static int findNumberOfTreasure (Graph g) {
+        // fungsi menerima input berupa graph
+        // mengembalikan jumlah treasure yang ada di peta
         int num_T = 0;
         foreach (Point point in g.Nodes) {
             if (point.Type == TypeGrid.Treasure) {
@@ -197,6 +216,8 @@ public class InputFile {
     }
 
     public static Point findStartingPoint (Graph g) {
+        // fungsi menerima input berupa graph
+        // mengembalikan titik awal dari peta
         Point starting = new Point(-1, -1, TypeGrid.X);
         foreach (Point point in g.Nodes) {
             if (point.Type == TypeGrid.KrustyKrab) {

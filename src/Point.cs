@@ -1,6 +1,7 @@
 using System;
 
 public enum TypeGrid {
+    // enum tipe grid yang mungkin dari peta
     KrustyKrab,         // KrustyKrab (Start point)
     Lintasan,           // Lintasan
     Treasure,           // Treasure
@@ -21,6 +22,14 @@ public class Point {
         get { return y; }
         set { y = value; }
     }
+
+    // contoh x dan y
+    // p0 p1 
+    // p2 p3 
+    // p0 = (0,0)
+    // p1 = (0,1)
+    // p2 = (1,0)
+    // p3 = (1,1)
 
     private TypeGrid type;
 
@@ -44,10 +53,12 @@ public class Point {
     }
 
     public void pointFound() {
+        // menandakan point sudah ditemukan
         found = true;
     }
 
     public void resetPoint(){
+        // mengembalikan point ke kondisi awal
         found = false;
     }
 
