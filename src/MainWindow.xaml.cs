@@ -18,7 +18,7 @@ using System.Windows.Threading;
 using System.Diagnostics;
 using System.Data;
 
-namespace FrontEnd
+namespace TreasureHuntSolver
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -5,14 +5,20 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>src\asset\mrkrabs1.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="src\asset\background.jpg" />
     <None Remove="src\asset\mrkrab.png" />
     <None Remove="src\asset\mrkrabs.ico" />
+    <None Remove="src\asset\mrkrabs1.ico" />
     <None Remove="src\asset\start.png" />
     <None Remove="src\asset\treasure.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="src\asset\mrkrabs1.ico" />
   </ItemGroup>
 
   <ItemGroup>
