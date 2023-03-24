@@ -203,12 +203,15 @@ public class InputFile {
         Graph g = makeGraph();
         
         List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
-        Console.WriteLine("\nJalur:");
+        Console.WriteLine("\nJalur Teleport:");
         foreach (List<Point> lp in solution) {
             Graph.printListPath(lp);
         }
 
-        List<Point> actualPath = MazeBFS.findPathBFS(g);
-        Graph.printListPath(actualPath);
+        List<List<Point>> actualPath = MazeBFS.findPathBFS(g);
+        Console.WriteLine("\nJalur Sambung:");
+        foreach (List<Point> lp in actualPath) {
+            Graph.printListPath(lp);
+        }
     }
 }
