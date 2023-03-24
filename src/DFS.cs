@@ -29,6 +29,7 @@ public class DFS{
     private TimeSpan tspTime = new TimeSpan();
 
     public DFS(Graph g, Point source, int numOfTreasure){
+        // mencari path dari source ke semua treasure
             this.g = g;
             g.resetGraph();
             var watch = new Stopwatch();
@@ -40,19 +41,23 @@ public class DFS{
     }
 
     private void dfs(Point source, int numOfTreasure){
+        // Menandakan Point telah ditemukan, menambah step, dan menyimpan Point
         step++;
         source.pointFound();
         pathVisited.Add(source);
         path.Add(source);
         if (source.Type == TypeGrid.Treasure){
+            // Jika Point berjenis Treasure
             treasureCount++;
         }
         if (treasureCount == numOfTreasure){
+            // Jika semua treasure telah ditemukan
             return;
         }
         if (g.getNeighboursNotVisited(source) == 0){
+            // Jika Point/simpul tidak memiliki tetangga yang belum dikunjungi
             addBacktrackPath(source);
-            // Graph.printListPath(backtrackPath);
+            // Melakukan backtrack ke Point yang belum dikunjungi
             foreach (Point node in backtrackPath){
                 path.Add(node);
                 step++;
@@ -60,19 +65,19 @@ public class DFS{
             backtrackPath.Clear();
         } else {
             var neighbours = g.getNeighbours(source);
-            // printListPath(neighbours);
+            // Menambah tetangga Point ke dalam stack
             for (int i = neighbours.Count-1; i >= 0; i--){
                 if (!neighbours[i].Found){
                     pathStack.Push(neighbours[i]);
                 }
             }
-            // printListPath(pathStack.ToList());
         }
         if (pathStack.Count == 0){
             System.Console.WriteLine("No path found");
             return;
         }
         Point next = pathStack.Pop();
+        // Mencari Point yang belum dikunjungi dari stack
         while (next.Found){
             if (pathStack.Count == 0){
             System.Console.WriteLine("No path found");
@@ -80,10 +85,13 @@ public class DFS{
             }
             next = pathStack.Pop();
         }
+        // Rekursif ke Point selanjutnya
         dfs(next, numOfTreasure);
     }
 
     private void dfs(Point source){
+        // sama seperti fungsi dfs sebelumnya tanpa batas treasure
+        // fungsi tidak digunakan dalam program
         tspStep++;
         source.pointFound();
         tspPath.Add(source);
@@ -114,6 +122,7 @@ public class DFS{
     }
 
     private void tsp(){
+        // fungsi tsp tidak digunakan dalam program
         var watch = new Stopwatch();
         watch.Start();
         for (int i = 0; i < path.Count; i++){
@@ -152,6 +161,8 @@ public class DFS{
     }
 
     public void tspUtil(Point source){
+        // fungsi rekursif tsp dengan menelusuri mundur dari path yang sudah didapat
+        // tidak digunakan dalam program
         source.pointFound();
         tspPath.Add(source);
         tspStep++;
@@ -166,6 +177,8 @@ public class DFS{
     }
 
     public void tspDFS(Point source){
+        // fungsi rekursif tsp dengan algoritma dfs
+        // tidak digunakan dalam program
         source.pointFound();
         if (tspPathVisited[tspPathVisited.Count - 1] != source){
             tspPath.Add(source);
@@ -197,6 +210,7 @@ public class DFS{
     
 
     private void deleteBacktrackPath(){
+        // menghapus path yang sudah dikunjungi
         List<Point> temp = new List<Point>();
         foreach (Point node in backtrackPath){
             temp.Add(node);
@@ -207,27 +221,34 @@ public class DFS{
     }
 
     private bool backtrackStop(Point source){
+        // kasus saat backtrack berhenti
         if (pathVisited.IndexOf(source) == 0){
+            // jika sudah kembali ke titik awal
             return true;
         }
         if (g.getNeighboursNotVisited(source) > 0){
+            // jika masih ada tetangga yang belum dikunjungi
             return true;
         }
         return false;
     }
 
     private void addBacktrackPath(Point source){
+        // prosedur utama backtrack
             var back = path[path.IndexOf(source)-1];
+            // mundur satu langkah
             backtrackPath.Add(back);
             back.pointFound();
             if (backtrackStop(back)){
                 return;
             }
             var next = path[path.IndexOf(back)-1];
+            // rekursif memanggil backtrack util
             addBacktrackPathUtil(next);
     }
 
     private void addBacktrackPathTSP(Point source){
+        // sama seperti backtrack biasa, namun khusus tsp
             var back = tspPath[tspPath.IndexOf(source)-1];
             backtrackPath.Add(back);
             back.pointFound();
@@ -239,6 +260,7 @@ public class DFS{
     }
 
     private void addBacktrackPathUtil(Point back){
+        // fungsi rekursif backtrack 
         backtrackPath.Add(back);
         back.pointFound();
         if (backtrackStop(back)){
@@ -249,6 +271,7 @@ public class DFS{
     }
 
     private void addBacktrackPathUtilTSP(Point back){
+        // fungsi rekursif backtrack tsp
         backtrackPath.Add(back);
         back.pointFound();
         if (backtrackStop(back)){
@@ -258,6 +281,7 @@ public class DFS{
         addBacktrackPathUtilTSP(next);
     }
 
+    // fungsi getter
     public List<Point> getFullPath(){
         return path;
     }
