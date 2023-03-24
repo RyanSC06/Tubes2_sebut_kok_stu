@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TreasureHuntSolver"
         mc:Ignorable="d"
-        Title="Treasure Hunt Solver" Icon="asset/mrkrabs.ico" Height="750" Width="1200" ShowInTaskbar="False">
+        Title="Treasure Hunt Solver" Icon="asset/mrkrabs.ico" Height="750" Width="1200" ShowInTaskbar="True" WindowState="Normal">
     <StackPanel Orientation="Vertical" Margin="30,25,30,10">
         <Border Background="Black" CornerRadius="13,13,0,0" BorderBrush="White" 
                 BorderThickness="1,1,1,0" >
