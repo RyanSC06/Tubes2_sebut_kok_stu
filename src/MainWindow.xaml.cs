@@ -43,15 +43,19 @@ namespace TreasureHuntSolver
         private StackPanel changedPanel = null;
 
         public MainWindow()
+        // init main window
         {
             InitializeComponent();
             this.ResizeMode = ResizeMode.NoResize;
+            
+            // init timer
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(duration);
             _timer.Tick += Timer_Tick;
         }
 
         private void makeMap()
+        // visualize the input file map to the output box
         {
             btnOpenFile.Content = System.IO.Path.GetFileName(filepath);
             map.Background = new SolidColorBrush(Colors.Black);
@@ -61,14 +65,14 @@ namespace TreasureHuntSolver
             height = fileMap.Length;
             width = fileMap[0].Length;
 
+            // Reset the output label
             route.Text = "Route: ";
             stepLabel.Content = "Steps: ";
             nodeLabel.Content = "Nodes: ";
             execTimeLabel.Content = "Execution Time: ";
 
-            /*map.Width = width;
-            map.Height = height;*/
-
+            
+            // Make width number of columns
             for (int i = 0; i < width; i++)
             {
                 // Create a new column definition
@@ -79,6 +83,7 @@ namespace TreasureHuntSolver
                 map.ColumnDefinitions.Add(newColumn);
             }
 
+            // Make height number of row
             for (int j = 0; j < height; j++)
             {
                 // Create a new row definition
@@ -89,6 +94,7 @@ namespace TreasureHuntSolver
                 map.RowDefinitions.Add(newRow);
             }
 
+            // Add a stackpanel to each cell
             for (int i = 0; i < height; i++)
             {
                 for (int j = 0; j < width; j++)
@@ -101,14 +107,13 @@ namespace TreasureHuntSolver
                     string newPanelName = "panel" + i.ToString() + j.ToString();
                     panel.SetValue(FrameworkElement.NameProperty, newPanelName);
 
+                    // Customize the panel based on the input file
                     if (fileMap[i][j] == 'K')
                     {
                         Image myImage = new Image();
                         panel.Background = new SolidColorBrush(Colors.Red);
                         myImage.Source = new BitmapImage(new Uri("asset/start.png", UriKind.Relative));
                         myImage.Stretch = Stretch.Uniform;
-                        /*myImage.HorizontalAlignment = HorizontalAlignment.Center;
-                        myImage.VerticalAlignment = VerticalAlignment.Center;*/
                         panel.Children.Add(myImage);
                     }
                     else if (fileMap[i][j] == 'R')
@@ -131,6 +136,7 @@ namespace TreasureHuntSolver
                         panel.Children.Add(myImage);
                     }
 
+                    // add the panel to the map and set it's row and column accordingly
                     map.Children.Add(panel);
                     Grid.SetRow(panel, i);
                     Grid.SetColumn(panel, j);
@@ -140,6 +146,7 @@ namespace TreasureHuntSolver
         }
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
+        // selecting a file from file explorer when the open file button is clicked 
         {
             idx = 0;
             changedPanel = null;
@@ -163,9 +170,11 @@ namespace TreasureHuntSolver
                     fileMap = InputFile.makeMap(dlg.FileName);
 
                     if (fileMap[0] == "-1") 
+                    // if file is not valid
                     {
                         MessageBox.Show("Map is not valid!", "Error Message");
                     } else
+                    // if file is valid
                     {
                         filepath = dlg.FileName;
                         makeMap();
@@ -176,18 +185,21 @@ namespace TreasureHuntSolver
         }
 
         private void rbBfs_Checked(object sender, RoutedEventArgs e)
+        // when a radiobutton for bfs is clicked, it updates the local variable 
         {
             bfsStatus = (bool)rbBfs.IsChecked;
             dfsStatus = (bool)rbDfs.IsChecked;
         }
 
         private void rbDfs_Checked(object sender, RoutedEventArgs e)
+        // when a radiobutton for dfs is clicked, it updates the local variable
         {
             bfsStatus = (bool)rbBfs.IsChecked;
             dfsStatus = (bool)rbDfs.IsChecked;
         }
 
         private void slDuration_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        // when the slider value changes, it updates the local variable
         {
             duration = slDuration.Value;
             if (_timer != null)
@@ -195,12 +207,15 @@ namespace TreasureHuntSolver
         }
 
         private void Timer_Tick(object sender, EventArgs e)
+        // when the timer starts, this function is called every some duration
         {
             if (idx < lenPath)
+            // if idx is less than lenPath, it will change the visualization panel
             {
                 if (changedPanel != null)
                 {
                     if (path[idx-1].Type == TypeGrid.Lintasan)
+                    // sets the lintasan to yellow after done checked
                     {
                         var newColor = System.Windows.Media.Color.FromRgb(252, 233, 98);
                         changedPanel.Background = new SolidColorBrush(newColor);
@@ -209,8 +224,10 @@ namespace TreasureHuntSolver
                 }
 
                 changedPanel = (StackPanel)LogicalTreeHelper.FindLogicalNode(map, "panel" + path[idx].X.ToString() + path[idx].Y.ToString());
+                // find the panel that will changed
 
                 if (path[idx].Type == TypeGrid.Lintasan)
+                // sets the color of the panel according to the point type
                 {
                     var newColor = System.Windows.Media.Color.FromRgb(117, 214, 255);
                     changedPanel.Background = new SolidColorBrush(newColor);
@@ -242,6 +259,7 @@ namespace TreasureHuntSolver
         }
 
         private string makeRoute(List<Point> fullpath)
+        // Make the output route string
         {
             string res = "";
             for (int i = 0; i < fullpath.Count-1; i++)
@@ -275,11 +293,14 @@ namespace TreasureHuntSolver
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
+        // when the button is clicked, it will run the BFS or DFS algorithm. And then, it will rurn the visualization of each step
         {
             if (filepath == "") {
+                // if the user have not chose any file
                 MessageBox.Show("You haven't choose any file", "Error Message");
             }
             else if ( !bfsStatus && !dfsStatus) {
+                // if the user have not chose any algorithm
                 MessageBox.Show("You haven't choose any file. Pick one, BFS or DFS", "Error Message");
             } else {
                 makeMap();
@@ -317,6 +338,7 @@ namespace TreasureHuntSolver
                 idx = 0;
                 changedPanel = null;
                 _timer.Start();
+                // Timer_Tick start
             }
         }
     }

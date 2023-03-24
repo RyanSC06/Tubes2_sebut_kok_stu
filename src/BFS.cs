@@ -4,6 +4,7 @@ using System.IO;
 
 public class MazeBFS{
     public static List<List<Point>> findCheckedBFS (Graph g) {
+        // melakukan pengecekan bfs normal kemudian mengembalikan path yang alurnya seperti teleport
         if (g.Nodes.Count != 0) {
             g.resetGraph();
             int num_T = InputFile.findNumberOfTreasure(g);
@@ -73,6 +74,7 @@ public class MazeBFS{
 
 
     public static List<List<Point>> findPathBFS (Graph g) {
+        // melakukan pengecekan bfs yang telah dimodifikasi sehingga path menjadi tersambung terus menerus
         if (g.Nodes.Count != 0) {
             g.resetGraph();
             int num_T = InputFile.findNumberOfTreasure(g);
