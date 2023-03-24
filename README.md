@@ -68,6 +68,7 @@ Hasil compile program akan berada pada folder bin berupa file executeable.
 Program dapat dijalankan dengan dua cara
 
 1. Menjalankan dari executeable yang sudah dibuat.
+
    Contohnya seperti berikut
 
    ```powershell
@@ -75,6 +76,7 @@ Program dapat dijalankan dengan dua cara
    ```
 
 2. Menggunakan command run dari dotnet.
+
     Pastikan berada pada root folder program. Jika sudah program dapat dijalankan dengan command
 
     ```powershell
