@@ -218,6 +218,14 @@ namespace FrontEnd
                 {
                     var newColor = System.Windows.Media.Color.FromRgb(176, 154, 0);
                     changedPanel.Background = new SolidColorBrush(newColor);
+                    changedPanel.Children.Clear();
+
+                    Image myImage = new Image();
+                    myImage.Source = new BitmapImage(new Uri("asset/mrkrab.png", UriKind.Relative));
+                    myImage.Stretch = Stretch.Uniform;
+                    myImage.HorizontalAlignment = HorizontalAlignment.Center;
+                    myImage.VerticalAlignment = VerticalAlignment.Center;
+                    changedPanel.Children.Add(myImage);
                 }
 
 

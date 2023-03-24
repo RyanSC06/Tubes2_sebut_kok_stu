@@ -43,7 +43,7 @@ public class Queue<T> {
     public void displayQueue() {
         for (int i = head; i < tail+1; i++) {
             if (buffer[i] != null) {
-                Console.WriteLine(buffer[i]);
+                System.Console.WriteLine(buffer[i]);
             }
         }
     }

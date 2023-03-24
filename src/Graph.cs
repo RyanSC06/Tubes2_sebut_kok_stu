@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 public class Graph{
 
     public List<Point> nodes;
@@ -76,7 +79,7 @@ public class Graph{
         Console.WriteLine();
     }
 
-    public static void Main (string[] args){
+    /*public static void Main (string[] args){
         // point test
         Point p = new Point(1, 2, TypeGrid.KrustyKrab);
         Console.WriteLine(p.X);
@@ -127,5 +130,5 @@ public class Graph{
         Console.WriteLine(g.getNeighbours(p4).Count);
 
     }
-
+*/
 }

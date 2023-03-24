@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FrontEnd"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900">
-    <StackPanel Orientation="Vertical" Margin="20">
+        Title="Treasure Hunt Solver" Icon="asset/mrkrabs.ico" Height="750" Width="1200" ShowInTaskbar="False">
+    <StackPanel Orientation="Vertical" Margin="30,25,30,10">
         <Border Background="Black" CornerRadius="13,13,0,0" BorderBrush="White" 
                 BorderThickness="1,1,1,0" >
             <StackPanel Orientation="Vertical" >
@@ -20,16 +20,16 @@
             <DockPanel >
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left" >
                     <TextBlock Text="Input" FontSize="30" FontWeight="Medium" Padding="2" x:Name="input"/>
-                    <Label Content="Filename" FontSize="20" Margin="0,20,0,0" Padding="2" />
-                    <Button x:Name="btnOpenFile" Click="btnOpenFile_Click" Width="164" Content="Open file"
+                    <Label Content="Filename" FontSize="24" Margin="0,45,0,0" Padding="2" />
+                    <Button x:Name="btnOpenFile" Click="btnOpenFile_Click" Width="184" Content="Open file"
                             HorizontalAlignment="Left" HorizontalContentAlignment="Left" Padding="6,4,0,5"
-                            Background="White"/>
-                    <Label Content="Algorithm" FontSize="20" Margin="0,20,0,0" Padding="2"/>
+                            Background="White" FontSize="15"/>
+                    <Label Content="Algorithm" FontSize="24" Margin="0,45,0,0" Padding="2"/>
                     <RadioButton Name="rbBfs" Margin="0,3,0,3" FontSize="17" Content="BFS"
                                  Template="{StaticResource CustomRadioButtonTemplate}" Checked="rbBfs_Checked"/>
                     <RadioButton Name="rbDfs" Margin="0,3,0,3" FontSize="17" Content="DFS" Checked="rbDfs_Checked"
                                  Template="{StaticResource CustomRadioButtonTemplate}"/>
-                    <Label Content="Duration of Each Step &#xD;&#xA;(in ms)"  FontSize="20" Margin="0,20,0,0" Padding="2" />
+                    <Label Content="Duration of Each Step &#xD;&#xA;(in ms)"  FontSize="24" Margin="0,45,0,0" Padding="2" />
                     <DockPanel VerticalAlignment="Center" Margin="4">
                         <Border CornerRadius="5" DockPanel.Dock="Right" BorderThickness="1.5" BorderBrush="Black" 
                                 Background="White" Margin="10,0,0,0">
@@ -39,8 +39,8 @@
                         <Slider Minimum="100" Maximum="3000" TickFrequency="100" IsSnapToTickEnabled="True" Name="slDuration" Value="500"
                                 Width="170" HorizontalAlignment="Left" Margin="0,0,5,0" Padding="0,0,5,0" ValueChanged="slDuration_ValueChanged" />
                     </DockPanel>
-                    <Button x:Name="btnSearch" Margin="0,20,0,0" Content="Search!" Width="146" Height="32" Background="Black" Padding="0"
-                            Foreground="White" FontSize="19" VerticalContentAlignment="Center" Click="btnSearch_Click">
+                    <Button x:Name="btnSearch" Margin="0,55,0,0" Content="Search!" Width="160" Height="37" Background="Black" Padding="0"
+                            Foreground="White" FontSize="25" VerticalContentAlignment="Center" Click="btnSearch_Click">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="17"/>
@@ -51,7 +51,7 @@
                 <Rectangle HorizontalAlignment="Stretch" Fill="Black" Width="2.3" Margin="13,2,13,2"/>
                 <StackPanel Orientation="Vertical" Margin="0" DockPanel.Dock="Right">
                     <TextBlock Text="Output" FontSize="30" FontWeight="Medium" Padding="2" x:Name="output"/>
-                    <Border BorderBrush="Black" BorderThickness="2" Height="250" Width="250">
+                    <Border BorderBrush="Black" BorderThickness="2" Height="400" Width="400">
                         <Grid x:Name = "map" Background = "White" >
                             <Grid.ColumnDefinitions />
                             <Grid.RowDefinitions />
@@ -81,6 +81,6 @@
         </Border>
     </StackPanel>
     <Window.Background>
-        <ImageBrush ImageSource="/asset/background.jpg" Stretch="UniformToFill"></ImageBrush>
+        <ImageBrush Stretch="UniformToFill" ImageSource="asset/background.jpg"/>
     </Window.Background>
 </Window>

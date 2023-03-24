@@ -1,1 +1,0 @@
-﻿InputFile.Main(args);

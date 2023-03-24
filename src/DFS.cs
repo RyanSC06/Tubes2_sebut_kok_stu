@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -115,11 +116,11 @@ public class DFS{
     private void tsp(){
         var watch = new Stopwatch();
         watch.Start();
-        for (int i = 0; i < path.Count(); i++){
+        for (int i = 0; i < path.Count; i++){
             tspPath.Add(path[i]);
             tspPath[i].pointFound();
         }
-        for (int i = 0; i < pathVisited.Count(); i++){
+        for (int i = 0; i < pathVisited.Count; i++){
             tspPathVisited.Add(pathVisited[i]);
             tspPathVisited[i].pointFound();
         }
@@ -273,6 +274,11 @@ public class DFS{
         return step;
     }
 
+    public double getTimeMicroS()
+    {
+        return time.TotalMicroseconds;
+    }
+
     public double getTimeMs(){
         return time.TotalMilliseconds;
     }
@@ -301,7 +307,7 @@ public class DFS{
         return tspTime + time;
     }
 
-    public static void Main(string[] args){
+/*    public static void Main(string[] args){
         Graph input = InputFile.makeGraph();
 
         // input.printNodes();
@@ -331,6 +337,6 @@ public class DFS{
 
         // List<Point> bfs = MazeBFS.findTreasureBFS(input);
         // printListPath(bfs);
-    }
+    }*/
 
 }

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="src\asset\background.jpg" />
+    <None Remove="src\asset\mrkrab.png" />
+    <None Remove="src\asset\mrkrabs.ico" />
+    <None Remove="src\asset\start.png" />
+    <None Remove="src\asset\treasure.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="src\asset\background.jpg" />
+    <Resource Include="src\asset\mrkrab.png" />
+    <Resource Include="src\asset\mrkrabs.ico" />
+    <Resource Include="src\asset\start.png" />
+    <Resource Include="src\asset\treasure.png" />
+  </ItemGroup>
+
+
+</Project>

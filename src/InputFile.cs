@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Windows.Shapes;
 
 public class InputFile {
     public static bool isMapValid (string[] map) {
@@ -54,14 +57,9 @@ public class InputFile {
         }
     }
 
-    public static string[] input() {
-        Console.Write("Masukkan nama file: ");
-        string filename = ("\\test\\" + Console.ReadLine() + ".txt");
-        string textFile =  (Directory.GetCurrentDirectory() + filename);
-        Console.WriteLine(textFile);
-
-        if (File.Exists(textFile)) {
-            string[] map = File.ReadAllLines(textFile).Select(line => line.Trim()).ToArray();
+    public static string[] input(string path) {
+        if (File.Exists(path)) {
+            string[] map = File.ReadAllLines(path).Select(line => line.Trim()).ToArray();
             if (isMapValid(map)) {
                 Console.WriteLine("\nPeta Anda:");
                 foreach (string line in map) {
@@ -94,21 +92,31 @@ public class InputFile {
         return (-1);
     }
 
-    public static string[] makeMap() {
-        string[] actualMap = input();        
-        string[] map = new string[actualMap.Length];
-        for (int r = 0; r < actualMap.Length; r++) {
-            for (int c = 0; c < actualMap[0].Length; c++) {
-                if (actualMap[r][c] != ' ') {
-                    map[r] = map[r] + actualMap[r][c];
+    public static string[] makeMap(string path) {
+        string[] actualMap = input(path);        
+        if (actualMap[0] == "-1")
+        {
+            return actualMap;
+        } else
+        {
+            string[] map = new string[actualMap.Length];
+            for (int r = 0; r < actualMap.Length; r++)
+            {
+                for (int c = 0; c < actualMap[0].Length; c++)
+                {
+                    if (actualMap[r][c] != ' ')
+                    {
+                        map[r] = map[r] + actualMap[r][c];
+                    }
                 }
             }
+            return map;
         }
-        return map;        
+                 
     }
 
-    public static Graph makeGraph() {
-        string[] actualMap = input();
+    public static Graph makeGraph(string path) {
+        string[] actualMap = input(path);
         string[] map = new string[actualMap.Length];
         for (int r = 0; r < actualMap.Length; r++) {
             for (int c = 0; c < actualMap[0].Length; c++) {
@@ -199,16 +207,16 @@ public class InputFile {
         return (starting);
     }
     
-    public static void Main (string[] args) {
-        Graph g = makeGraph();
+    // public static void Main (string[] args) {
+    //     Graph g = makeGraph();
         
-        List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
-        Console.WriteLine("\nJalur:");
-        foreach (List<Point> lp in solution) {
-            Graph.printListPath(lp);
-        }
+    //     List<List<Point>> solution = MazeBFS.findCheckedBFS(g);
+    //     Console.WriteLine("\nJalur:");
+    //     foreach (List<Point> lp in solution) {
+    //         Graph.printListPath(lp);
+    //     }
 
-        List<Point> actualPath = MazeBFS.findPathBFS(g);
-        Graph.printListPath(actualPath);
-    }
+    //     List<Point> actualPath = MazeBFS.findPathBFS(g);
+    //     Graph.printListPath(actualPath);
+    // }
 }
