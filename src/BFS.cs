@@ -72,14 +72,15 @@ public class MazeBFS{
     }
 
 
-    public static List<Point> findPathBFS (Graph g) {
+    public static List<List<Point>> findPathBFS (Graph g) {
         if (g.Nodes.Count != 0) {
             g.resetGraph();
             int num_T = InputFile.findNumberOfTreasure(g);
             int num_found = 0;
 
-            Queue<Point> QP = new Queue<Point>(g.Nodes.Count * 10);
-            Queue<List<Point>> QLP = new Queue<List<Point>>(g.Nodes.Count * 10);
+            Queue<Point> QP = new Queue<Point>(g.Nodes.Count * 1000);
+            Queue<List<Point>> QLP = new Queue<List<Point>>(g.Nodes.Count * 1000);
+            List<Point> checkedPath = new List<Point>();
 
             //INISIALISASI (PENGECEKAN PERTAMA)
             Point now = InputFile.findStartingPoint(g);
@@ -87,6 +88,7 @@ public class MazeBFS{
 
             List<Point> path = new List<Point>();
             path.Add(now);
+            checkedPath.Add(now);
             
             foreach (Point point in g.AdjList[now]) {
                 if (point.Found == false) {
@@ -104,6 +106,7 @@ public class MazeBFS{
                 List<Point> pathOther = new List<Point>(QLP.Dequeue());
                 pathOther.Add(now);
                 path = pathOther;
+                checkedPath.Add(now);
 
                 if (now.Type == TypeGrid.Treasure) {
                     foreach (Point p in g.Nodes) {
@@ -129,10 +132,17 @@ public class MazeBFS{
                 }
             }
 
-            return (path);
+            List<List<Point>> returnValue = new List<List<Point>> ();
+            returnValue.Add(path);
+            returnValue.Add(checkedPath);
+            return (returnValue);
         } else {
+            List<Point> checkedPath = new List<Point>();
             List<Point> path = new List<Point>();
-            return (path);
+            List<List<Point>> returnValue = new List<List<Point>> ();
+            returnValue.Add(path);
+            returnValue.Add(checkedPath);
+            return (returnValue);
         }
     }
 }

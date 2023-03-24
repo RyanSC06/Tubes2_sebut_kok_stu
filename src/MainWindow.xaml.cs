@@ -297,12 +297,12 @@ namespace FrontEnd
                 {
                     var watch = new Stopwatch();
                     watch.Start();
-                    List<List<Point>> res = MazeBFS.findCheckedBFS(graph);
+                    List<List<Point>> res = MazeBFS.findPathBFS(graph);
                     watch.Stop();
                     TimeSpan time = watch.Elapsed;
 
                     path = res[1];
-                    fullpath = MazeBFS.findPathBFS(graph);
+                    fullpath = res[0];
                     
 
                     stepLabel.Content = "Steps: " + (fullpath.Count - 1);

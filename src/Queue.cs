@@ -10,10 +10,6 @@ public class Queue<T> {
         // Console.WriteLine("Queue dibuat!");
     }
 
-    ~Queue() {
-        //Perlu ga ya?
-    }
-
     public void Enqueue(T element) {
         //coba ikutin alstrukdat
         if (head == -1 && tail == -1) {
