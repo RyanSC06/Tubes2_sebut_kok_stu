@@ -109,7 +109,7 @@ Optional : mengubah kecepatan animasi dengan menggeser slider atau memasukkan an
 
 Disusun Oleh :
 
-Kelompok subet_kok_stu
+Kelompok sebut_kok_stu
 
 - Yanuar Sano Nur Rasyid (13521110)
 - Saddam Annais Shaquille (13521121)
